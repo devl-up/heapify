@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="src/Heapify.Application/Heapify.Application.csproj" />
+  <Project Path="src/Heapify.Domain/Heapify.Domain.csproj" />
+  <Project Path="src/Heapify.Infrastructure/Heapify.Infrastructure.csproj" />
+  <Project Path="src/Heapify.Presentation/Heapify.Presentation.csproj" />
+</Solution>
