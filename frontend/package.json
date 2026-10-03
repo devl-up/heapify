@@ -16,12 +16,13 @@
     "solid-js": "1.9.15"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.3.3",
+    "@tailwindcss/vite": "4.3.3",
     "@types/node": "26.6.4",
+    "eslint-plugin-solid": "0.18.0",
     "oxfmt": "0.71.0",
     "oxlint": "1.86.0",
     "oxlint-tsgolint": "7.0.2003",
-    "tailwindcss": "^4.3.3",
+    "tailwindcss": "4.3.3",
     "typescript": "7.0.2",
     "vite": "8.3.2",
     "vite-plugin-solid": "2.11.14"
