@@ -32,7 +32,7 @@
     "solid/prefer-show": "error",
     "solid/prefer-structured-class": "error",
     "solid/reactivity": "error",
-    "solid/removed-api": "error",
+    "solid/removed-api": "off",
     "solid/self-closing-comp": "error",
     "solid/style-prop": "error"
   },

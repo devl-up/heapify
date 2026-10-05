@@ -1,8 +1,21 @@
-/* @refresh reload */
-import { render } from "solid-js/web";
+import { Route, Router } from "@solidjs/router";
 import "./index.css";
-import App from "./App.tsx";
+import { lazy } from "solid-js";
+import { render } from "solid-js/web";
+
+const Home = lazy(() => import("./routes/home").then((module) => ({ default: module.Home })));
 
 const root = document.getElementById("root");
 
-render(() => <App />, root!);
+if (!root) {
+  throw new Error("Root element not found");
+}
+
+render(
+  () => (
+    <Router>
+      <Route path="/" component={Home} />
+    </Router>
+  ),
+  root,
+);
