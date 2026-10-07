@@ -1,7 +1,10 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "ignorePatterns": [],
-  "sortTailwindcss": true,
+  "sortTailwindcss": {
+    "stylesheet": "./src/index.css",
+    "functions": ["cva", "tw", "clsx"]
+  },
   "sortImports": {
     "newlinesBetween": false,
     "groups": [
