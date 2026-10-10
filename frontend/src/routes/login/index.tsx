@@ -57,7 +57,7 @@ function RouteComponent() {
           form.handleSubmit();
         }}
       >
-        <span className="self-center text-2xl">Login</span>
+        <h1 className="self-center text-2xl">Login</h1>
         <form.AppField
           name="email"
           children={(field) => <field.TextField label="Email" type="email" />}

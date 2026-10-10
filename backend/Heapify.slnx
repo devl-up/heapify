@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Tests/">
+    <Project Path="tests/Heapify.IntegrationTests/Heapify.IntegrationTests.csproj" />
+  </Folder>
   <Project Path="src/Heapify.Application/Heapify.Application.csproj" />
   <Project Path="src/Heapify.Domain/Heapify.Domain.csproj" />
   <Project Path="src/Heapify.Infrastructure/Heapify.Infrastructure.csproj" />

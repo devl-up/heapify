@@ -17,5 +17,5 @@ function IndexComponent() {
     return <Navigate to="/login" replace />;
   }
 
-  return <Navigate to="/home" replace />;
+  return <Navigate to="/projects" replace />;
 }

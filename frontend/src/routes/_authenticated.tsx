@@ -31,7 +31,7 @@ function AuthenticatedComponent() {
   return (
     <div className="flex min-h-screen flex-col gap-4 divide-y">
       <div className="flex items-center justify-between px-4 py-2">
-        <span>Heapify</span>
+        <h1 className="text-2xl">Heapify</h1>
         <Button
           disabled={logoutMutation.isPending}
           onClick={async () => await logoutMutation.mutateAsync()}

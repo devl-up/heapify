@@ -13,7 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as RegisterIndexRouteImport } from './routes/register/index'
-import { Route as AuthenticatedHomeIndexRouteImport } from './routes/_authenticated/home/index'
+import { Route as AuthenticatedProjectsIndexRouteImport } from './routes/_authenticated/projects/index'
+import { Route as AuthenticatedProjectsCreateIndexRouteImport } from './routes/_authenticated/projects/create/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,23 +35,32 @@ const RegisterIndexRoute = RegisterIndexRouteImport.update({
   path: '/register/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedHomeIndexRoute = AuthenticatedHomeIndexRouteImport.update({
-  id: '/home/',
-  path: '/home/',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
+const AuthenticatedProjectsIndexRoute =
+  AuthenticatedProjectsIndexRouteImport.update({
+    id: '/projects/',
+    path: '/projects/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedProjectsCreateIndexRoute =
+  AuthenticatedProjectsCreateIndexRouteImport.update({
+    id: '/projects/create/',
+    path: '/projects/create/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login/': typeof LoginIndexRoute
   '/register/': typeof RegisterIndexRoute
-  '/home/': typeof AuthenticatedHomeIndexRoute
+  '/projects/': typeof AuthenticatedProjectsIndexRoute
+  '/projects/create/': typeof AuthenticatedProjectsCreateIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginIndexRoute
   '/register': typeof RegisterIndexRoute
-  '/home': typeof AuthenticatedHomeIndexRoute
+  '/projects': typeof AuthenticatedProjectsIndexRoute
+  '/projects/create': typeof AuthenticatedProjectsCreateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -58,20 +68,22 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login/': typeof LoginIndexRoute
   '/register/': typeof RegisterIndexRoute
-  '/_authenticated/home/': typeof AuthenticatedHomeIndexRoute
+  '/_authenticated/projects/': typeof AuthenticatedProjectsIndexRoute
+  '/_authenticated/projects/create/': typeof AuthenticatedProjectsCreateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login/' | '/register/' | '/home/'
+  fullPaths: '/' | '/login/' | '/register/' | '/projects/' | '/projects/create/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/home'
+  to: '/' | '/login' | '/register' | '/projects' | '/projects/create'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login/'
     | '/register/'
-    | '/_authenticated/home/'
+    | '/_authenticated/projects/'
+    | '/_authenticated/projects/create/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -111,22 +123,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/home/': {
-      id: '/_authenticated/home/'
-      path: '/home'
-      fullPath: '/home/'
-      preLoaderRoute: typeof AuthenticatedHomeIndexRouteImport
+    '/_authenticated/projects/': {
+      id: '/_authenticated/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof AuthenticatedProjectsIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/projects/create/': {
+      id: '/_authenticated/projects/create/'
+      path: '/projects/create'
+      fullPath: '/projects/create/'
+      preLoaderRoute: typeof AuthenticatedProjectsCreateIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
   }
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedHomeIndexRoute: typeof AuthenticatedHomeIndexRoute
+  AuthenticatedProjectsIndexRoute: typeof AuthenticatedProjectsIndexRoute
+  AuthenticatedProjectsCreateIndexRoute: typeof AuthenticatedProjectsCreateIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedHomeIndexRoute: AuthenticatedHomeIndexRoute,
+  AuthenticatedProjectsIndexRoute: AuthenticatedProjectsIndexRoute,
+  AuthenticatedProjectsCreateIndexRoute: AuthenticatedProjectsCreateIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

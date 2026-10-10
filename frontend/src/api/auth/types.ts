@@ -1,6 +1,5 @@
 export interface UserDto {
-  readonly id: string;
-  readonly name: string;
+  readonly name: string | null;
 }
 
 export interface RegisterDto {

@@ -4,20 +4,25 @@ import { cn } from "@/lib/utils";
 
 import type { ComponentProps } from "react";
 
-const navLinkVariants = cva("transition-all disabled:pointer-events-none disabled:opacity-50", {
-  variants: {
-    variant: {
-      default: "text-primary underline-offset-4 hover:underline",
+const navLinkVariants = cva(
+  "flex items-center gap-1 transition-all disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "text-primary underline underline-offset-4",
+        button:
+          "rounded border border-primary bg-primary px-2 text-primary-foreground hover:bg-primary/80",
+      },
+      size: {
+        default: "h-8 [&>svg]:size-3",
+      },
     },
-    size: {
-      default: "h-8",
+    defaultVariants: {
+      variant: "default",
+      size: "default",
     },
   },
-  defaultVariants: {
-    variant: "default",
-    size: "default",
-  },
-});
+);
 
 type NavLinkProps = ComponentProps<"a"> & VariantProps<typeof navLinkVariants>;
 

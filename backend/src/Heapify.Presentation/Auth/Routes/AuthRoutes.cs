@@ -13,7 +13,8 @@ internal static class AuthRoutes
     {
         internal void MapAuthRoutes()
         {
-            var group = app.MapGroup("auth");
+            var group = app.MapGroup("auth")
+                .WithTags("Auth");
 
             group.MapGet("me",
                 async (HttpContext http, [FromServices] UserManager<User> userManager) =>
@@ -29,7 +30,7 @@ internal static class AuthRoutes
 
                     return user == null
                         ? Results.Unauthorized()
-                        : Results.Ok(new UserDto(user.Id, user.UserName));
+                        : Results.Ok(new UserDto(user.UserName));
                 });
 
             group.MapPost("register", async (
