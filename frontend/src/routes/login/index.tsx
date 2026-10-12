@@ -1,7 +1,6 @@
 import { revalidateLogic } from "@tanstack/react-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { CircleAlert } from "lucide-react";
 import { z } from "zod";
 import { authApi } from "@/api/auth/api";
 import { meOptions } from "@/api/auth/queries";
