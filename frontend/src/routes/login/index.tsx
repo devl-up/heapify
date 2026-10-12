@@ -51,20 +51,18 @@ function RouteComponent() {
     <div className="flex min-h-screen items-center justify-center">
       <form
         className="flex w-64 flex-col gap-4"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          form.handleSubmit();
+          await form.handleSubmit();
         }}
       >
         <h1 className="self-center text-2xl">Login</h1>
-        <form.AppField
-          name="email"
-          children={(field) => <field.TextField label="Email" type="email" />}
-        />
-        <form.AppField
-          name="password"
-          children={(field) => <field.TextField label="Password" type="password" />}
-        />
+        <form.AppField name="email">
+          {(field) => <field.TextField label="Email" type="email" />}
+        </form.AppField>
+        <form.AppField name="password">
+          {(field) => <field.TextField label="Password" type="password" />}
+        </form.AppField>
         {loginMutation.isError && <Alert variant="error">Login failed</Alert>}
         <div className="flex flex-col gap-1">
           <form.AppForm>

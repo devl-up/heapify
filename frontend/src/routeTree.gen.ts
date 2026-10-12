@@ -8,158 +8,156 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
-import { Route as LoginIndexRouteImport } from './routes/login/index'
-import { Route as RegisterIndexRouteImport } from './routes/register/index'
-import { Route as AuthenticatedProjectsIndexRouteImport } from './routes/_authenticated/projects/index'
-import { Route as AuthenticatedProjectsCreateIndexRouteImport } from './routes/_authenticated/projects/create/index'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as AuthenticatedRouteImport } from "./routes/_authenticated";
+import { Route as AuthenticatedProjectsCreateIndexRouteImport } from "./routes/_authenticated/projects/create/index";
+import { Route as AuthenticatedProjectsIndexRouteImport } from "./routes/_authenticated/projects/index";
+import { Route as IndexRouteImport } from "./routes/index";
+import { Route as LoginIndexRouteImport } from "./routes/login/index";
+import { Route as RegisterIndexRouteImport } from "./routes/register/index";
 
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
+  id: "/_authenticated",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const LoginIndexRoute = LoginIndexRouteImport.update({
-  id: '/login/',
-  path: '/login/',
+  id: "/login/",
+  path: "/login/",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const RegisterIndexRoute = RegisterIndexRouteImport.update({
-  id: '/register/',
-  path: '/register/',
+  id: "/register/",
+  path: "/register/",
   getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedProjectsIndexRoute =
-  AuthenticatedProjectsIndexRouteImport.update({
-    id: '/projects/',
-    path: '/projects/',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-const AuthenticatedProjectsCreateIndexRoute =
-  AuthenticatedProjectsCreateIndexRouteImport.update({
-    id: '/projects/create/',
-    path: '/projects/create/',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
+} as any);
+const AuthenticatedProjectsIndexRoute = AuthenticatedProjectsIndexRouteImport.update({
+  id: "/projects/",
+  path: "/projects/",
+  getParentRoute: () => AuthenticatedRoute,
+} as any);
+const AuthenticatedProjectsCreateIndexRoute = AuthenticatedProjectsCreateIndexRouteImport.update({
+  id: "/projects/create/",
+  path: "/projects/create/",
+  getParentRoute: () => AuthenticatedRoute,
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/login/': typeof LoginIndexRoute
-  '/register/': typeof RegisterIndexRoute
-  '/projects/': typeof AuthenticatedProjectsIndexRoute
-  '/projects/create/': typeof AuthenticatedProjectsCreateIndexRoute
+  "/": typeof IndexRoute;
+  "/login/": typeof LoginIndexRoute;
+  "/register/": typeof RegisterIndexRoute;
+  "/projects/": typeof AuthenticatedProjectsIndexRoute;
+  "/projects/create/": typeof AuthenticatedProjectsCreateIndexRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/login': typeof LoginIndexRoute
-  '/register': typeof RegisterIndexRoute
-  '/projects': typeof AuthenticatedProjectsIndexRoute
-  '/projects/create': typeof AuthenticatedProjectsCreateIndexRoute
+  "/": typeof IndexRoute;
+  "/login": typeof LoginIndexRoute;
+  "/register": typeof RegisterIndexRoute;
+  "/projects": typeof AuthenticatedProjectsIndexRoute;
+  "/projects/create": typeof AuthenticatedProjectsCreateIndexRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/login/': typeof LoginIndexRoute
-  '/register/': typeof RegisterIndexRoute
-  '/_authenticated/projects/': typeof AuthenticatedProjectsIndexRoute
-  '/_authenticated/projects/create/': typeof AuthenticatedProjectsCreateIndexRoute
+  __root__: typeof rootRouteImport;
+  "/": typeof IndexRoute;
+  "/_authenticated": typeof AuthenticatedRouteWithChildren;
+  "/login/": typeof LoginIndexRoute;
+  "/register/": typeof RegisterIndexRoute;
+  "/_authenticated/projects/": typeof AuthenticatedProjectsIndexRoute;
+  "/_authenticated/projects/create/": typeof AuthenticatedProjectsCreateIndexRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login/' | '/register/' | '/projects/' | '/projects/create/'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/projects' | '/projects/create'
+  fileRoutesByFullPath: FileRoutesByFullPath;
+  fullPaths: "/" | "/login/" | "/register/" | "/projects/" | "/projects/create/";
+  fileRoutesByTo: FileRoutesByTo;
+  to: "/" | "/login" | "/register" | "/projects" | "/projects/create";
   id:
-    | '__root__'
-    | '/'
-    | '/_authenticated'
-    | '/login/'
-    | '/register/'
-    | '/_authenticated/projects/'
-    | '/_authenticated/projects/create/'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/"
+    | "/_authenticated"
+    | "/login/"
+    | "/register/"
+    | "/_authenticated/projects/"
+    | "/_authenticated/projects/create/";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  LoginIndexRoute: typeof LoginIndexRoute
-  RegisterIndexRoute: typeof RegisterIndexRoute
+  IndexRoute: typeof IndexRoute;
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren;
+  LoginIndexRoute: typeof LoginIndexRoute;
+  RegisterIndexRoute: typeof RegisterIndexRoute;
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login/': {
-      id: '/login/'
-      path: '/login'
-      fullPath: '/login/'
-      preLoaderRoute: typeof LoginIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/register/': {
-      id: '/register/'
-      path: '/register'
-      fullPath: '/register/'
-      preLoaderRoute: typeof RegisterIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/projects/': {
-      id: '/_authenticated/projects/'
-      path: '/projects'
-      fullPath: '/projects/'
-      preLoaderRoute: typeof AuthenticatedProjectsIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/projects/create/': {
-      id: '/_authenticated/projects/create/'
-      path: '/projects/create'
-      fullPath: '/projects/create/'
-      preLoaderRoute: typeof AuthenticatedProjectsCreateIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/_authenticated": {
+      id: "/_authenticated";
+      path: "";
+      fullPath: "/";
+      preLoaderRoute: typeof AuthenticatedRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/login/": {
+      id: "/login/";
+      path: "/login";
+      fullPath: "/login/";
+      preLoaderRoute: typeof LoginIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/register/": {
+      id: "/register/";
+      path: "/register";
+      fullPath: "/register/";
+      preLoaderRoute: typeof RegisterIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/_authenticated/projects/": {
+      id: "/_authenticated/projects/";
+      path: "/projects";
+      fullPath: "/projects/";
+      preLoaderRoute: typeof AuthenticatedProjectsIndexRouteImport;
+      parentRoute: typeof AuthenticatedRoute;
+    };
+    "/_authenticated/projects/create/": {
+      id: "/_authenticated/projects/create/";
+      path: "/projects/create";
+      fullPath: "/projects/create/";
+      preLoaderRoute: typeof AuthenticatedProjectsCreateIndexRouteImport;
+      parentRoute: typeof AuthenticatedRoute;
+    };
   }
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedProjectsIndexRoute: typeof AuthenticatedProjectsIndexRoute
-  AuthenticatedProjectsCreateIndexRoute: typeof AuthenticatedProjectsCreateIndexRoute
+  AuthenticatedProjectsIndexRoute: typeof AuthenticatedProjectsIndexRoute;
+  AuthenticatedProjectsCreateIndexRoute: typeof AuthenticatedProjectsCreateIndexRoute;
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedProjectsIndexRoute: AuthenticatedProjectsIndexRoute,
   AuthenticatedProjectsCreateIndexRoute: AuthenticatedProjectsCreateIndexRoute,
-}
+};
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
-)
+);
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginIndexRoute: LoginIndexRoute,
   RegisterIndexRoute: RegisterIndexRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();

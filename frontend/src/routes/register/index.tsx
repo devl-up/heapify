@@ -49,24 +49,21 @@ function RouteComponent() {
     <div className="flex min-h-screen items-center justify-center">
       <form
         className="flex w-64 flex-col gap-4"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          form.handleSubmit();
+          await form.handleSubmit();
         }}
       >
         <h1 className="self-center text-2xl">Register</h1>
-        <form.AppField
-          name="username"
-          children={(field) => <field.TextField label="Username" type="text" />}
-        />
-        <form.AppField
-          name="email"
-          children={(field) => <field.TextField label="Email" type="email" />}
-        />
-        <form.AppField
-          name="password"
-          children={(field) => <field.TextField label="Password" type="password" />}
-        />
+        <form.AppField name="username">
+          {(field) => <field.TextField label="Username" type="text" />}
+        </form.AppField>
+        <form.AppField name="email">
+          {(field) => <field.TextField label="Email" type="email" />}
+        </form.AppField>
+        <form.AppField name="password">
+          {(field) => <field.TextField label="Password" type="password" />}
+        </form.AppField>
         {registerMutation.isError && <Alert variant="error">Registration failed</Alert>}
         <div className="flex flex-col gap-1">
           <form.AppForm>

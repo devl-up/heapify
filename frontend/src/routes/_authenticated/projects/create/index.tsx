@@ -54,15 +54,14 @@ function RouteComponent() {
       <h1 className="text-2xl">Create Project</h1>
       <form
         className="flex w-64 flex-col gap-4"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          form.handleSubmit();
+          await form.handleSubmit();
         }}
       >
-        <form.AppField
-          name="name"
-          children={(field) => <field.TextField label="Name" type="text" />}
-        />
+        <form.AppField name="name">
+          {(field) => <field.TextField label="Name" type="text" />}
+        </form.AppField>
         {createMutation.isError && <Alert variant="error">Project creation failed</Alert>}
         <div>
           <form.AppForm>
