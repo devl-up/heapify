@@ -1,10 +1,11 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [],
+  "ignorePatterns": ["src/routeTree.gen.ts"],
   "sortTailwindcss": {
     "stylesheet": "./src/index.css",
     "functions": ["cva", "tw", "clsx"]
   },
+
   "sortImports": {
     "newlinesBetween": false,
     "groups": [
@@ -12,6 +13,7 @@
       ["value-internal", "value-parent", "value-sibling", "value-index"],
       { "newlinesBetween": true },
       "type-import",
+
       "unknown"
     ]
   }
