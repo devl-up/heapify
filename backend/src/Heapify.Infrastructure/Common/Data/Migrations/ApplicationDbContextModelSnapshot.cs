@@ -60,6 +60,9 @@ namespace Heapify.Infrastructure.Common.Data.Migrations
                     b.HasKey("Id")
                         .HasName("pk_project");
 
+                    b.HasIndex("Name")
+                        .HasDatabaseName("ix_project_name");
+
                     b.ToTable("project", (string)null);
                 });
 
@@ -309,7 +312,7 @@ namespace Heapify.Infrastructure.Common.Data.Migrations
             modelBuilder.Entity("Heapify.Domain.Projects.Entities.Member", b =>
                 {
                     b.HasOne("Heapify.Domain.Projects.Entities.Project", null)
-                        .WithMany()
+                        .WithMany("Members")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -378,6 +381,11 @@ namespace Heapify.Infrastructure.Common.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_asp_net_user_tokens_asp_net_users_user_id");
+                });
+
+            modelBuilder.Entity("Heapify.Domain.Projects.Entities.Project", b =>
+                {
+                    b.Navigation("Members");
                 });
 #pragma warning restore 612, 618
         }
