@@ -16,5 +16,7 @@ internal sealed class ProjectConfiguration : IEntityTypeConfiguration<Project>
         builder.Property(p => p.Name)
             .IsRequired()
             .HasMaxLength(50);
+
+        builder.HasIndex(p => p.Name);
     }
 }

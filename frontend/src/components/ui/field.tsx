@@ -5,18 +5,14 @@ import type { ComponentProps } from "react";
 
 type FieldProps = ComponentProps<typeof BaseField.Root>;
 
-const Field = ({ className, children, ...props }: FieldProps) => {
-  return (
-    <BaseField.Root {...props} className={cn("", className)}>
-      {children}
-    </BaseField.Root>
-  );
+const Field = ({ children, ...props }: FieldProps) => {
+  return <BaseField.Root {...props}>{children}</BaseField.Root>;
 };
 
 type FieldLabelProps = ComponentProps<typeof BaseField.Label>;
 
-const FieldLabel = ({ className, ...props }: FieldLabelProps) => {
-  return <BaseField.Label {...props} className={cn("", className)} />;
+const FieldLabel = ({ ...props }: FieldLabelProps) => {
+  return <BaseField.Label {...props} />;
 };
 
 type FieldControlProps = ComponentProps<typeof BaseField.Control>;

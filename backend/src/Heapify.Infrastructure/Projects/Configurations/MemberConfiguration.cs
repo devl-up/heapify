@@ -15,7 +15,7 @@ internal sealed class MemberConfiguration : IEntityTypeConfiguration<Member>
             .IsRequired();
 
         builder.HasOne<Project>()
-            .WithMany()
+            .WithMany(p => p.Members)
             .HasForeignKey(m => m.ProjectId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
