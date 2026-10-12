@@ -1,4 +1,4 @@
-name: Backend - PR
+name: BFF - PR
 
 on:
   push:
@@ -7,6 +7,25 @@ on:
     branches: [ "main" ]
 
 jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26.x
+      - name: Install packages
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Lint
+        run: npm run lint
+      - name: Format
+        run: npm run fmt
   backend:
     runs-on: ubuntu-latest
     defaults:
