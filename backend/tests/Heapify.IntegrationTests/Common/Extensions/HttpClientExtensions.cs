@@ -6,7 +6,7 @@ public static class HttpClientExtensions
 {
     extension(HttpClient client)
     {
-        private async Task<HttpClient> WithAntiforgeryAsync()
+        public async Task<HttpClient> WithAntiforgeryAsync()
         {
             var response = await client.GetAsync("/api/v1/auth/antiforgery");
             response.EnsureSuccessStatusCode();
@@ -25,11 +25,11 @@ public static class HttpClientExtensions
         {
             client = await client.WithAntiforgeryAsync();
 
-            var registerDto = new RegisterDto(username, email, password);
+            var registerDto = new RegisterDto { Username = username, Email = email, Password = password };
             var registerResponse = await client.PostAsJsonAsync("/api/v1/auth/register", registerDto);
             registerResponse.EnsureSuccessStatusCode();
 
-            var loginDto = new LoginDto(email, password);
+            var loginDto = new LoginDto { Email = email, Password = password };
             var loginResponse = await client.PostAsJsonAsync("/api/v1/auth/login", loginDto);
             loginResponse.EnsureSuccessStatusCode();
 

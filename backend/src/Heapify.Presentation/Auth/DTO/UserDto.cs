@@ -1,3 +1,6 @@
 ﻿namespace Heapify.Presentation.Auth.DTO;
 
-public sealed record UserDto(string? Name);
+public sealed class UserDto
+{
+    public required string Name { get; init; }
+}

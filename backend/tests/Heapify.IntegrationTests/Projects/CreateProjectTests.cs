@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Heapify.IntegrationTests.Projects;
 
-public class CreateProjectTests(IntegrationTestFixture fixture)
+public sealed class CreateProjectTests(IntegrationTestFixture fixture)
     : IntegrationTestBase(fixture)
 {
     [Fact]

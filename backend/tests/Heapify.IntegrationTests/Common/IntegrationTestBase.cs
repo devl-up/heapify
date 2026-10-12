@@ -8,6 +8,7 @@ namespace Heapify.IntegrationTests.Common;
 public abstract class IntegrationTestBase(IntegrationTestFixture fixture) : IAsyncLifetime
 {
     protected DatabaseFixture Database => fixture.Database;
+    protected CustomWebApplicationFactory Factory => fixture.Factory;
 
     public async Task InitializeAsync()
     {

@@ -30,7 +30,7 @@ internal static class AuthRoutes
 
                     return user == null
                         ? Results.Unauthorized()
-                        : Results.Ok(new UserDto(user.UserName));
+                        : Results.Ok(new UserDto { Name = user.UserName! });
                 });
 
             group.MapPost("register", async (
