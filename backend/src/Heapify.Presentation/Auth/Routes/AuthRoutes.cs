@@ -30,21 +30,21 @@ internal static class AuthRoutes
 
                     return user == null
                         ? Results.Unauthorized()
-                        : Results.Ok(new UserDto { Name = user.UserName! });
+                        : Results.Ok(new UserResponse { Name = user.UserName! });
                 });
 
             group.MapPost("register", async (
                 [FromServices] UserManager<User> userManager,
-                [FromBody] RegisterDto dto) =>
+                [FromBody] RegisterRequest request) =>
             {
                 var user = new User
                 {
                     Id = Guid.CreateVersion7(),
-                    UserName = dto.Username,
-                    Email = dto.Email
+                    UserName = request.Username,
+                    Email = request.Email
                 };
 
-                var result = await userManager.CreateAsync(user, dto.Password);
+                var result = await userManager.CreateAsync(user, request.Password);
 
                 return result.Succeeded ? Results.Ok() : Results.BadRequest();
             }).AllowAnonymous();
@@ -52,15 +52,15 @@ internal static class AuthRoutes
             group.MapPost("login", async (
                 [FromServices] SignInManager<User> signInManager,
                 [FromServices] UserManager<User> userManager,
-                [FromBody] LoginDto dto) =>
+                [FromBody] LoginRequest request) =>
             {
-                var user = await userManager.FindByEmailAsync(dto.Email);
+                var user = await userManager.FindByEmailAsync(request.Email);
                 if (user == null)
                 {
                     return Results.Unauthorized();
                 }
 
-                var result = await signInManager.PasswordSignInAsync(user, dto.Password, true, false);
+                var result = await signInManager.PasswordSignInAsync(user, request.Password, true, false);
 
                 return result.Succeeded ? Results.Ok() : Results.Unauthorized();
             }).AllowAnonymous();

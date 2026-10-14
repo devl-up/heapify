@@ -1,14 +1,14 @@
 import { queryOptions } from "@tanstack/react-query";
 import { projectApi } from "./api";
 
-import type { PaginatedResult } from "../common/types";
-import type { ProjectDto } from "./types";
+import type { PaginatedResponse } from "../common/types";
+import type { GetProjectsRequest, ProjectResponse } from "./types";
 
-export const getProjectsOptions = (index: number, size: number) => {
-  return queryOptions<PaginatedResult<ProjectDto>>({
-    queryKey: ["projects", index, size],
-    queryFn: async () => {
-      const response = await projectApi.getAll(index, size);
+export const getProjectsOptions = (request: GetProjectsRequest) => {
+  return queryOptions<PaginatedResponse<ProjectResponse>>({
+    queryKey: ["projects", request],
+    queryFn: async ({ signal }) => {
+      const response = await projectApi.getAll(request, signal);
       return response.data;
     },
   });

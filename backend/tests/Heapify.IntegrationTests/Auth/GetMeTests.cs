@@ -16,10 +16,10 @@ public sealed class GetMeTests(IntegrationTestFixture fixture) : IntegrationTest
         using var client = await CreateClient().AuthenticateAsync(username);
 
         // Act
-        var user = await client.GetFromJsonAsync<UserDto>("/api/v1/auth/me");
+        var user = await client.GetFromJsonAsync<UserResponse>("/api/v1/auth/me");
 
         // Assert
-        var expectedUser = new UserDto { Name = username };
+        var expectedUser = new UserResponse { Name = username };
         Assert.NotNull(user);
         Assert.Equivalent(expectedUser, user);
     }

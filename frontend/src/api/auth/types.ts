@@ -1,14 +1,14 @@
-export interface UserDto {
+export interface UserResponse {
   readonly name: string | null;
 }
 
-export interface RegisterDto {
+export interface RegisterRequest {
   readonly username: string;
   readonly email: string;
   readonly password: string;
 }
 
-export interface LoginDto {
+export interface LoginRequest {
   readonly email: string;
   readonly password: string;
 }

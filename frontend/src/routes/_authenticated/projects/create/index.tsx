@@ -8,6 +8,8 @@ import Alert from "@/components/ui/alert";
 import NavLink from "@/components/ui/nav-link";
 import { useAppForm } from "@/hooks/use-app-form";
 
+import type { CreateProjectRequest } from "@/api/projects/types";
+
 const schema = z.object({
   name: z
     .string()
@@ -24,7 +26,7 @@ function RouteComponent() {
 
   const createMutation = useMutation({
     mutationKey: ["create-project"],
-    mutationFn: projectApi.create,
+    mutationFn: (request: CreateProjectRequest) => projectApi.create(request),
     onSuccess: async () => {
       await navigate({ to: "/projects" });
     },

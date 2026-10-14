@@ -11,19 +11,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DEFAULT_PAGE_INDEX, DEFAULT_PAGE_SIZE } from "@/lib/page";
+import {
+  DEFAULT_PAGE_INDEX,
+  DEFAULT_PAGE_SIZE,
+  INDEX_MIN_VALUE,
+  PAGE_MAX_VALUE,
+  PAGE_MIN_VALUE,
+} from "@/lib/page";
 
 const searchSchema = z.object({
-  index: z.number().default(DEFAULT_PAGE_INDEX),
-  size: z.number().default(DEFAULT_PAGE_SIZE),
+  index: z.number().gte(INDEX_MIN_VALUE).default(DEFAULT_PAGE_INDEX),
+  size: z.number().gte(PAGE_MIN_VALUE).lte(PAGE_MAX_VALUE).default(DEFAULT_PAGE_SIZE),
 });
 
 export const Route = createFileRoute("/_authenticated/projects/")({
   component: RouteComponent,
   validateSearch: searchSchema,
   loaderDeps: ({ search }) => ({ index: search.index, size: search.size }),
-  loader: ({ context, deps }) =>
-    context.queryClient.query(getProjectsOptions(deps.index, deps.size)),
+  loader: ({ context, deps }) => context.queryClient.query(getProjectsOptions(deps)),
 });
 
 function RouteComponent() {

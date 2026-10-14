@@ -2,14 +2,14 @@
 
 namespace Heapify.Application.Projects.DTO;
 
-public sealed class CreateProjectDto
+public sealed class CreateProjectRequest
 {
     public required string Name { get; init; }
 }
 
-internal sealed class CreateProjectDtoValidator : AbstractValidator<CreateProjectDto>
+internal sealed class CreateProjectRequestValidator : AbstractValidator<CreateProjectRequest>
 {
-    public CreateProjectDtoValidator()
+    public CreateProjectRequestValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()

@@ -19,13 +19,13 @@ public sealed class CreateProjectTests(IntegrationTestFixture fixture)
         using var client = await CreateClient()
             .AuthenticateAsync();
 
-        var dto = new CreateProjectDto
+        var request = new CreateProjectRequest
         {
             Name = "Test Project"
         };
 
         // Act
-        var response = await client.PostAsJsonAsync("/api/v1/projects", dto);
+        var response = await client.PostAsJsonAsync("/api/v1/projects", request);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -38,7 +38,7 @@ public sealed class CreateProjectTests(IntegrationTestFixture fixture)
         var expectedProject = new Project
         {
             Id = id,
-            Name = dto.Name
+            Name = request.Name
         };
 
         await using var context = Database.CreateContext();

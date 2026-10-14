@@ -1,19 +1,19 @@
 import apiClient from "@/api/api-client";
 
-import type { UserDto, RegisterDto, LoginDto } from "./types";
+import type { UserResponse, RegisterRequest, LoginRequest } from "./types";
 
 const url = "/api/v1/auth";
 
 const me = async () => {
-  return await apiClient.get<UserDto>(`${url}/me`);
+  return await apiClient.get<UserResponse>(`${url}/me`);
 };
 
-const register = async (dto: RegisterDto) => {
-  return await apiClient.post(`${url}/register`, dto);
+const register = async (request: RegisterRequest) => {
+  return await apiClient.post(`${url}/register`, request);
 };
 
-const login = async (dto: LoginDto) => {
-  await apiClient.post(`${url}/login`, dto);
+const login = async (request: LoginRequest) => {
+  await apiClient.post(`${url}/login`, request);
   await antiforgery();
 };
 

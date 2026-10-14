@@ -51,7 +51,7 @@ public sealed class GetProjectsTests(IntegrationTestFixture fixture)
         }
 
         // Act
-        var response = await client.GetFromJsonAsync<PaginatedResult<ProjectDto>>("/api/v1/projects");
+        var response = await client.GetFromJsonAsync<PaginatedResponse<ProjectResponse>>("/api/v1/projects?index=0&size=10");
 
         // Assert
         Assert.NotNull(response);
@@ -59,7 +59,7 @@ public sealed class GetProjectsTests(IntegrationTestFixture fixture)
         var expectedTotalCount = projects.Count;
         Assert.Equal(expectedTotalCount, response.TotalCount);
 
-        var expectedProjects = projects.Select(p => new ProjectDto
+        var expectedProjects = projects.Select(p => new ProjectResponse
         {
             Id = p.Id,
             Name = p.Name

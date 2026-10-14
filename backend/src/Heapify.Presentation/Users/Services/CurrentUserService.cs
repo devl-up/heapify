@@ -6,7 +6,7 @@ namespace Heapify.Presentation.Users.Services;
 
 internal sealed class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {
-    public async Task<CurrentUserDto> GetAsync(CancellationToken cancellationToken = default)
+    public CurrentUser Get()
     {
         var userId = httpContextAccessor.HttpContext?.User.GetUserId();
         if (!userId.HasValue)
@@ -14,7 +14,7 @@ internal sealed class CurrentUserService(IHttpContextAccessor httpContextAccesso
             throw new InvalidOperationException("User is not authenticated.");
         }
 
-        return new CurrentUserDto
+        return new CurrentUser
         {
             Id = userId.Value
         };

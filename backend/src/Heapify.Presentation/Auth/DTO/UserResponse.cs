@@ -1,6 +1,6 @@
 ﻿namespace Heapify.Presentation.Auth.DTO;
 
-public sealed class UserDto
+public sealed class UserResponse
 {
     public required string Name { get; init; }
 }

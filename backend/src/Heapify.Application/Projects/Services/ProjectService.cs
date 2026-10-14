@@ -12,18 +12,19 @@ namespace Heapify.Application.Projects.Services;
 internal sealed class ProjectService(
     IApplicationDbContext dbContext,
     ICurrentUserService currentUserService,
-    IValidator<CreateProjectDto> createProjectValidator) : IProjectService
+    IValidator<CreateProjectRequest> createProjectValidator,
+    IValidator<GetProjectsRequest> getProjectsValidator) : IProjectService
 {
-    public async Task<Guid> CreateAsync(CreateProjectDto dto, CancellationToken cancellationToken = default)
+    public async Task<Guid> CreateAsync(CreateProjectRequest request, CancellationToken cancellationToken)
     {
-        await createProjectValidator.ValidateAndThrowAsync(dto, cancellationToken);
+        await createProjectValidator.ValidateAndThrowAsync(request, cancellationToken);
 
-        var currentUser = await currentUserService.GetAsync(cancellationToken);
+        var currentUser = currentUserService.Get();
 
         var project = new Project
         {
             Id = Guid.CreateVersion7(),
-            Name = dto.Name
+            Name = request.Name
         };
 
         var member = new Member
@@ -40,10 +41,12 @@ internal sealed class ProjectService(
         return project.Id;
     }
 
-    public async Task<PaginatedResult<ProjectDto>> GetAllAsync(int index, int size,
-        CancellationToken cancellationToken = default)
+    public async Task<PaginatedResponse<ProjectResponse>> GetAllAsync(GetProjectsRequest request,
+        CancellationToken cancellationToken)
     {
-        var currentUser = await currentUserService.GetAsync(cancellationToken);
+        await getProjectsValidator.ValidateAndThrowAsync(request, cancellationToken);
+
+        var currentUser = currentUserService.Get();
 
         var query = dbContext.Set<Project>()
             .Where(p => p.Members.Any(m => m.UserId == currentUser.Id));
@@ -52,16 +55,16 @@ internal sealed class ProjectService(
 
         var items = await query
             .OrderBy(p => p.Name)
-            .Skip(index * size)
-            .Take(size)
-            .Select(p => new ProjectDto
+            .Skip(request.Index * request.Size)
+            .Take(request.Size)
+            .Select(p => new ProjectResponse
             {
                 Id = p.Id,
                 Name = p.Name
             })
             .ToListAsync(cancellationToken);
 
-        return new PaginatedResult<ProjectDto>
+        return new PaginatedResponse<ProjectResponse>
         {
             Items = items,
             TotalCount = totalCount
