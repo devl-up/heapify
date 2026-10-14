@@ -1,10 +1,10 @@
 import { queryOptions } from "@tanstack/react-query";
 import { authApi } from "./api";
 
-import type { UserDto } from "./types";
+import type { UserResponse } from "./types";
 
 export const meOptions = () => {
-  return queryOptions<UserDto | null>({
+  return queryOptions<UserResponse | null>({
     queryKey: ["auth", "me"],
     queryFn: async () => {
       const response = await authApi.me();

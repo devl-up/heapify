@@ -2,6 +2,7 @@
 
 public static class PageConstants
 {
-    public const int DefaultIndex = 0;
-    public const int DefaultSize = 50;
+    public const int MinimumIndex = 0;
+    public const int MinimumSize = 0;
+    public const int MaximumSize = 50;
 }

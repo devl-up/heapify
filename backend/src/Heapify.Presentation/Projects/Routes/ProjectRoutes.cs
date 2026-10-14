@@ -1,5 +1,4 @@
-﻿using Heapify.Application.Common.Constants;
-using Heapify.Application.Projects.DTO;
+﻿using Heapify.Application.Projects.DTO;
 using Heapify.Application.Projects.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,19 +14,18 @@ internal static class ProjectRoutes
                 .WithTags("Projects");
 
             group.MapGet("",
-                async ([FromServices] IProjectService service, [FromQuery] int index = PageConstants.DefaultIndex,
-                    [FromQuery] int size = PageConstants.DefaultSize,
-                    CancellationToken cancellationToken = default) =>
+                async ([FromServices] IProjectService service, [AsParameters] GetProjectsRequest request,
+                    CancellationToken cancellationToken) =>
                 {
-                    var result = await service.GetAllAsync(index, size, cancellationToken);
-                    return Results.Ok(result);
+                    var response = await service.GetAllAsync(request, cancellationToken);
+                    return Results.Ok(response);
                 });
 
             group.MapPost("",
-                async ([FromServices] IProjectService service, [FromBody] CreateProjectDto dto,
-                    CancellationToken cancellationToken = default) =>
+                async ([FromServices] IProjectService service, [FromBody] CreateProjectRequest request,
+                    CancellationToken cancellationToken) =>
                 {
-                    var id = await service.CreateAsync(dto, cancellationToken);
+                    var id = await service.CreateAsync(request, cancellationToken);
                     return Results.Created($"/api/v1/projects/{id}", null);
                 });
 

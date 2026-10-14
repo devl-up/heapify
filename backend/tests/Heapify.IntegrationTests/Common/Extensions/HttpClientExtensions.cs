@@ -25,12 +25,12 @@ public static class HttpClientExtensions
         {
             client = await client.WithAntiforgeryAsync();
 
-            var registerDto = new RegisterDto { Username = username, Email = email, Password = password };
-            var registerResponse = await client.PostAsJsonAsync("/api/v1/auth/register", registerDto);
+            var registerRequest = new RegisterRequest { Username = username, Email = email, Password = password };
+            var registerResponse = await client.PostAsJsonAsync("/api/v1/auth/register", registerRequest);
             registerResponse.EnsureSuccessStatusCode();
 
-            var loginDto = new LoginDto { Email = email, Password = password };
-            var loginResponse = await client.PostAsJsonAsync("/api/v1/auth/login", loginDto);
+            var loginRequest = new LoginRequest { Email = email, Password = password };
+            var loginResponse = await client.PostAsJsonAsync("/api/v1/auth/login", loginRequest);
             loginResponse.EnsureSuccessStatusCode();
 
             return await client.WithAntiforgeryAsync();

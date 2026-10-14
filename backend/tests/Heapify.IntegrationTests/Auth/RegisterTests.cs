@@ -20,10 +20,10 @@ public sealed class RegisterTests(IntegrationTestFixture fixture) : IntegrationT
         const string email = "test@heapify.dev";
         const string password = "Password123";
 
-        var registerDto = new RegisterDto { Username = username, Email = email, Password = password };
+        var registerRequest = new RegisterRequest { Username = username, Email = email, Password = password };
 
         // Act
-        var registerResponse = await client.PostAsJsonAsync("/api/v1/auth/register", registerDto);
+        var registerResponse = await client.PostAsJsonAsync("/api/v1/auth/register", registerRequest);
 
         // Assert
         registerResponse.EnsureSuccessStatusCode();

@@ -1,16 +1,19 @@
 import apiClient from "../api-client";
 
-import type { PaginatedResult } from "../common/types";
-import type { CreateProjectDto, ProjectDto } from "./types";
+import type { PaginatedResponse } from "../common/types";
+import type { CreateProjectRequest, GetProjectsRequest, ProjectResponse } from "./types";
 
 const url = "/api/v1/projects";
 
-const getAll = async (index: number, size: number) => {
-  return await apiClient.get<PaginatedResult<ProjectDto>>(`${url}`, { params: { index, size } });
+const getAll = async (params: GetProjectsRequest, signal?: AbortSignal) => {
+  return await apiClient.get<PaginatedResponse<ProjectResponse>>(`${url}`, {
+    params,
+    signal,
+  });
 };
 
-const create = async (dto: CreateProjectDto) => {
-  return await apiClient.post(`${url}`, dto);
+const create = async (request: CreateProjectRequest, signal?: AbortSignal) => {
+  return await apiClient.post(`${url}`, request, { signal });
 };
 
 export const projectApi = {
