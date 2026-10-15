@@ -1,4 +1,5 @@
-﻿using Heapify.Presentation.Auth.DTO;
+﻿using Heapify.IntegrationTests.Common.DTO;
+using Heapify.Presentation.Auth.DTO;
 
 namespace Heapify.IntegrationTests.Common.Extensions;
 
@@ -21,17 +22,14 @@ public static class HttpClientExtensions
         }
 
         public async Task<HttpClient> AuthenticateAsync(
-            string username = "test", string email = "test@heapify.dev", string password = "Password123")
+            string email = TestUser.Email,
+            string password = TestUser.Password)
         {
             client = await client.WithAntiforgeryAsync();
 
-            var registerRequest = new RegisterRequest { Username = username, Email = email, Password = password };
-            var registerResponse = await client.PostAsJsonAsync("/api/v1/auth/register", registerRequest);
-            registerResponse.EnsureSuccessStatusCode();
-
-            var loginRequest = new LoginRequest { Email = email, Password = password };
-            var loginResponse = await client.PostAsJsonAsync("/api/v1/auth/login", loginRequest);
-            loginResponse.EnsureSuccessStatusCode();
+            var request = new LoginRequest { Email = email, Password = password };
+            var response = await client.PostAsJsonAsync("/api/v1/auth/login", request);
+            response.EnsureSuccessStatusCode();
 
             return await client.WithAntiforgeryAsync();
         }

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
+import { Eye, Plus } from "lucide-react";
 import { z } from "zod";
 import { getProjectsOptions } from "@/api/projects/queries";
 import NavLink from "@/components/ui/nav-link";
@@ -46,15 +46,24 @@ function RouteComponent() {
       <Table>
         <TableHead>
           <TableRow>
-            <TableHeader>ID</TableHeader>
             <TableHeader>Name</TableHeader>
+            <TableHeader className="w-14" />
           </TableRow>
         </TableHead>
         <TableBody>
           {projectsQuery.items.map((project) => (
             <TableRow key={project.id}>
-              <TableCell>{project.id}</TableCell>
               <TableCell>{project.name}</TableCell>
+              <TableCell>
+                <NavLink
+                  to="/projects/$id"
+                  params={{ id: project.id }}
+                  variant="icon"
+                  size="medium"
+                >
+                  <Eye />
+                </NavLink>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

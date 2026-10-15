@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Heapify.IntegrationTests.Common;
+using Heapify.IntegrationTests.Common.DTO;
 using Heapify.IntegrationTests.Common.Extensions;
 using Heapify.IntegrationTests.Common.Fixtures;
 using Heapify.Presentation.Auth.DTO;
@@ -15,15 +16,7 @@ public sealed class LoginTests(IntegrationTestFixture fixture) : IntegrationTest
         using var client = await CreateClient()
             .WithAntiforgeryAsync();
 
-        const string username = "test";
-        const string email = "test@heapify.dev";
-        const string password = "Password123";
-
-        var registerRequest = new RegisterRequest { Username = username, Email = email, Password = password };
-        var registerResponse = await client.PostAsJsonAsync("/api/v1/auth/register", registerRequest);
-        registerResponse.EnsureSuccessStatusCode();
-
-        var loginRequest = new LoginRequest { Email = email, Password = password };
+        var loginRequest = new LoginRequest { Email = TestUser.Email, Password = TestUser.Password };
 
         // Act
         var loginResponse = await client.PostAsJsonAsync("/api/v1/auth/login", loginRequest);

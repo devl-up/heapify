@@ -70,4 +70,16 @@ internal sealed class ProjectService(
             TotalCount = totalCount
         };
     }
+
+    public async Task<ProjectResponse> GetAsync(Guid id, CancellationToken cancellationToken)
+    {
+        return await dbContext.Set<Project>()
+            .Where(p => p.Id == id)
+            .Select(p => new ProjectResponse
+            {
+                Id = p.Id,
+                Name = p.Name
+            })
+            .FirstAsync(cancellationToken);
+    }
 }

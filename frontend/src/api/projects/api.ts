@@ -12,6 +12,10 @@ const getAll = async (params: GetProjectsRequest, signal?: AbortSignal) => {
   });
 };
 
+const get = async (projectId: string, signal?: AbortSignal) => {
+  return await apiClient.get<ProjectResponse>(`${url}/${projectId}`, { signal });
+};
+
 const create = async (request: CreateProjectRequest, signal?: AbortSignal) => {
   return await apiClient.post(`${url}`, request, { signal });
 };
@@ -19,4 +23,5 @@ const create = async (request: CreateProjectRequest, signal?: AbortSignal) => {
 export const projectApi = {
   create,
   getAll,
+  get,
 };

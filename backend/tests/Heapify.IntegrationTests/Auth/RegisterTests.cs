@@ -16,9 +16,9 @@ public sealed class RegisterTests(IntegrationTestFixture fixture) : IntegrationT
         using var client = await CreateClient()
             .WithAntiforgeryAsync();
 
-        const string username = "test";
-        const string email = "test@heapify.dev";
-        const string password = "Password123";
+        const string username = "test-2";
+        const string email = "test-2@heapify.dev";
+        const string password = "Password234";
 
         var registerRequest = new RegisterRequest { Username = username, Email = email, Password = password };
 
