@@ -6,8 +6,10 @@ using Heapify.Infrastructure.Common.Data;
 using Heapify.Infrastructure.Common.Extensions;
 using Heapify.Presentation.Auth.Filters;
 using Heapify.Presentation.Auth.Routes;
+using Heapify.Presentation.Common.AuthorizationHandlers;
 using Heapify.Presentation.Projects.Routes;
 using Heapify.Presentation.Users.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
 namespace Heapify.Presentation;
@@ -27,6 +29,7 @@ public sealed class Program
         builder.Services.AddHttpContextAccessor();
 
         builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
+        builder.Services.AddScoped<IAuthorizationHandler, ProjectPermissionAuthorizationHandler>();
 
         builder.Services.AddIdentityCore<User>()
             .AddRoles<Role>()

@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as RegisterIndexRouteImport } from './routes/register/index'
 import { Route as AuthenticatedProjectsIndexRouteImport } from './routes/_authenticated/projects/index'
+import { Route as AuthenticatedProjectsIdIndexRouteImport } from './routes/_authenticated/projects/$id/index'
 import { Route as AuthenticatedProjectsCreateIndexRouteImport } from './routes/_authenticated/projects/create/index'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +42,12 @@ const AuthenticatedProjectsIndexRoute =
     path: '/projects/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedProjectsIdIndexRoute =
+  AuthenticatedProjectsIdIndexRouteImport.update({
+    id: '/projects/$id/',
+    path: '/projects/$id/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedProjectsCreateIndexRoute =
   AuthenticatedProjectsCreateIndexRouteImport.update({
     id: '/projects/create/',
@@ -53,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/login/': typeof LoginIndexRoute
   '/register/': typeof RegisterIndexRoute
   '/projects/': typeof AuthenticatedProjectsIndexRoute
+  '/projects/$id/': typeof AuthenticatedProjectsIdIndexRoute
   '/projects/create/': typeof AuthenticatedProjectsCreateIndexRoute
 }
 export interface FileRoutesByTo {
@@ -60,6 +68,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginIndexRoute
   '/register': typeof RegisterIndexRoute
   '/projects': typeof AuthenticatedProjectsIndexRoute
+  '/projects/$id': typeof AuthenticatedProjectsIdIndexRoute
   '/projects/create': typeof AuthenticatedProjectsCreateIndexRoute
 }
 export interface FileRoutesById {
@@ -69,13 +78,26 @@ export interface FileRoutesById {
   '/login/': typeof LoginIndexRoute
   '/register/': typeof RegisterIndexRoute
   '/_authenticated/projects/': typeof AuthenticatedProjectsIndexRoute
+  '/_authenticated/projects/$id/': typeof AuthenticatedProjectsIdIndexRoute
   '/_authenticated/projects/create/': typeof AuthenticatedProjectsCreateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login/' | '/register/' | '/projects/' | '/projects/create/'
+  fullPaths:
+    | '/'
+    | '/login/'
+    | '/register/'
+    | '/projects/'
+    | '/projects/$id/'
+    | '/projects/create/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/projects' | '/projects/create'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/projects'
+    | '/projects/$id'
+    | '/projects/create'
   id:
     | '__root__'
     | '/'
@@ -83,6 +105,7 @@ export interface FileRouteTypes {
     | '/login/'
     | '/register/'
     | '/_authenticated/projects/'
+    | '/_authenticated/projects/$id/'
     | '/_authenticated/projects/create/'
   fileRoutesById: FileRoutesById
 }
@@ -130,6 +153,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjectsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/projects/$id/': {
+      id: '/_authenticated/projects/$id/'
+      path: '/projects/$id'
+      fullPath: '/projects/$id/'
+      preLoaderRoute: typeof AuthenticatedProjectsIdIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/projects/create/': {
       id: '/_authenticated/projects/create/'
       path: '/projects/create'
@@ -142,11 +172,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedProjectsIndexRoute: typeof AuthenticatedProjectsIndexRoute
+  AuthenticatedProjectsIdIndexRoute: typeof AuthenticatedProjectsIdIndexRoute
   AuthenticatedProjectsCreateIndexRoute: typeof AuthenticatedProjectsCreateIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedProjectsIndexRoute: AuthenticatedProjectsIndexRoute,
+  AuthenticatedProjectsIdIndexRoute: AuthenticatedProjectsIdIndexRoute,
   AuthenticatedProjectsCreateIndexRoute: AuthenticatedProjectsCreateIndexRoute,
 }
 

@@ -12,9 +12,11 @@ const navLinkVariants = cva(
         default: "text-primary underline underline-offset-4",
         button:
           "rounded border border-primary bg-primary px-2 text-primary-foreground hover:bg-primary/80",
+        icon: "flex items-center justify-center rounded-full hover:bg-primary/10",
       },
       size: {
-        default: "h-8 [&>svg]:size-3",
+        default: "h-8 has-[&>svg]:w-8 [&>svg]:size-3",
+        medium: "h-10 has-[&>svg]:w-10 [&>svg]:size-4",
       },
     },
     defaultVariants: {

@@ -7,4 +7,5 @@ public interface IProjectService
 {
     Task<Guid> CreateAsync(CreateProjectRequest request, CancellationToken cancellationToken);
     Task<PaginatedResponse<ProjectResponse>> GetAllAsync(GetProjectsRequest request, CancellationToken cancellationToken);
+    Task<ProjectResponse> GetAsync(Guid id, CancellationToken cancellationToken);
 }

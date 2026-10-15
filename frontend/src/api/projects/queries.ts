@@ -13,3 +13,13 @@ export const getProjectsOptions = (request: GetProjectsRequest) => {
     },
   });
 };
+
+export const getProjectOptions = (projectId: string) => {
+  return queryOptions<ProjectResponse>({
+    queryKey: ["project", projectId],
+    queryFn: async ({ signal }) => {
+      const response = await projectApi.get(projectId, signal);
+      return response.data;
+    },
+  });
+};
