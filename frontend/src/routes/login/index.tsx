@@ -4,8 +4,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { authApi } from "@/api/auth/api";
 import { meOptions } from "@/api/auth/queries";
-import Alert from "@/components/ui/alert";
-import NavLink from "@/components/ui/nav-link";
+import { Alert } from "@/components/ui/alert";
+import { NavLink } from "@/components/ui/nav-link";
 import { useAppForm } from "@/hooks/use-app-form";
 
 const schema = z.object({
@@ -63,7 +63,7 @@ function RouteComponent() {
         <form.AppField name="password">
           {(field) => <field.TextField label="Password" type="password" />}
         </form.AppField>
-        {loginMutation.isError && <Alert variant="error">Login failed</Alert>}
+        {loginMutation.isError && <Alert intent="error">Login failed</Alert>}
         <div className="flex flex-col gap-1">
           <form.AppForm>
             <form.SubmitButton label="Login" />
