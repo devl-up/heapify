@@ -4,8 +4,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { z } from "zod";
 import { projectApi } from "@/api/projects/api";
-import Alert from "@/components/ui/alert";
-import NavLink from "@/components/ui/nav-link";
+import { Alert } from "@/components/ui/alert";
+import { NavLink } from "@/components/ui/nav-link";
 import { useAppForm } from "@/hooks/use-app-form";
 
 import type { CreateProjectRequest } from "@/api/projects/types";
@@ -64,7 +64,7 @@ function RouteComponent() {
         <form.AppField name="name">
           {(field) => <field.TextField label="Name" type="text" />}
         </form.AppField>
-        {createMutation.isError && <Alert variant="error">Project creation failed</Alert>}
+        {createMutation.isError && <Alert intent="error">Project creation failed</Alert>}
         <div>
           <form.AppForm>
             <form.SubmitButton label="Save" />

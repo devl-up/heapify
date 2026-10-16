@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Eye, Plus } from "lucide-react";
 import { z } from "zod";
 import { getProjectsOptions } from "@/api/projects/queries";
-import NavLink from "@/components/ui/nav-link";
+import { ButtonLink } from "@/components/ui/button-link";
+import { NavLink } from "@/components/ui/nav-link";
 import {
   Table,
   TableBody,
@@ -38,10 +39,10 @@ function RouteComponent() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl">Projects</h1>
-        <NavLink to="/projects/create" variant="button">
+        <ButtonLink to="/projects/create">
           <Plus />
           Create Project
-        </NavLink>
+        </ButtonLink>
       </div>
       <Table>
         <TableHead>
@@ -55,12 +56,7 @@ function RouteComponent() {
             <TableRow key={project.id}>
               <TableCell>{project.name}</TableCell>
               <TableCell>
-                <NavLink
-                  to="/projects/$id"
-                  params={{ id: project.id }}
-                  variant="icon"
-                  size="medium"
-                >
+                <NavLink to="/projects/$id" params={{ id: project.id }} intent="icon">
                   <Eye />
                 </NavLink>
               </TableCell>

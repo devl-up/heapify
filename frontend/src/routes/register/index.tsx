@@ -3,8 +3,8 @@ import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { z } from "zod";
 import { authApi } from "@/api/auth/api";
-import Alert from "@/components/ui/alert";
-import NavLink from "@/components/ui/nav-link";
+import { Alert } from "@/components/ui/alert";
+import { NavLink } from "@/components/ui/nav-link";
 import { useAppForm } from "@/hooks/use-app-form";
 
 const schema = z.object({
@@ -64,7 +64,7 @@ function RouteComponent() {
         <form.AppField name="password">
           {(field) => <field.TextField label="Password" type="password" />}
         </form.AppField>
-        {registerMutation.isError && <Alert variant="error">Registration failed</Alert>}
+        {registerMutation.isError && <Alert intent="error">Registration failed</Alert>}
         <div className="flex flex-col gap-1">
           <form.AppForm>
             <form.SubmitButton label="Register" />

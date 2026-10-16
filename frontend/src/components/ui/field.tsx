@@ -22,7 +22,7 @@ const FieldControl = ({ className, ...props }: FieldControlProps) => {
     <BaseField.Control
       {...props}
       className={cn(
-        "outline-none border rounded-sm px-2 py-1 aria-invalid:border-red-500 aria-invalid:ring-1 aria-invalid:ring-red-500",
+        "outline-none border rounded-md px-2 py-1 aria-invalid:border-red-500 aria-invalid:ring-1 aria-invalid:ring-red-500",
         className,
       )}
     />
