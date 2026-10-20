@@ -44,41 +44,50 @@ public sealed class CreateWorkItemTests(IntegrationTestFixture fixture)
             await dbContext.SaveChangesAsync();
         }
 
-        var request = new CreateWorkItemRequest
-        {
-            ProjectId = project.Id,
-            Title = "Test Work Item"
-        };
-
         // Act
-        var response = await client.PostAsJsonAsync("/api/v1/work-items", request);
+        const int numberOfRequests = 100;
+        const string title = "Test Work Item";
+
+        var tasks = Enumerable.Range(0, numberOfRequests)
+            .Select(_ => client.PostAsJsonAsync("/api/v1/work-items", new CreateWorkItemRequest
+            {
+                ProjectId = project.Id,
+                Title = title
+            }))
+            .ToList();
+
+        var responses = await Task.WhenAll(tasks);
 
         // Assert
-        response.EnsureSuccessStatusCode();
-        var locationId = response.Headers.Location?.OriginalString.Split('/').Last();
-        Assert.NotNull(locationId);
-        Assert.True(int.TryParse(locationId, out var number));
-
-        var expectedWorkItem = new WorkItem
-        {
-            ProjectId = project.Id,
-            Number = number,
-            Title = request.Title
-        };
-
         await using var context = Database.CreateContext();
 
-        var workItem = await context.Set<WorkItem>()
-            .AsNoTracking()
-            .FirstAsync(w => w.Number == number && w.ProjectId == project.Id);
+        foreach (var response in responses)
+        {
+            response.EnsureSuccessStatusCode();
 
-        Assert.Equivalent(expectedWorkItem, workItem);
+            var locationId = response.Headers.Location?.OriginalString.Split('/').Last();
+            Assert.NotNull(locationId);
+            Assert.True(int.TryParse(locationId, out var number));
+
+            var expectedWorkItem = new WorkItem
+            {
+                ProjectId = project.Id,
+                Number = number,
+                Title = title
+            };
+
+            var workItem = await context.Set<WorkItem>()
+                .AsNoTracking()
+                .FirstAsync(w => w.Number == number && w.ProjectId == project.Id);
+
+            Assert.Equivalent(expectedWorkItem, workItem);
+        }
 
         var updatedProject = await context.Set<Project>()
             .AsNoTracking()
             .FirstAsync(p => p.Id == project.Id);
 
-        var expectedNumber = project.NextNumber + 1;
+        var expectedNumber = numberOfRequests + 1;
 
         Assert.Equal(expectedNumber, updatedProject.NextNumber);
     }
@@ -99,7 +108,17 @@ public sealed class CreateWorkItemTests(IntegrationTestFixture fixture)
 
         await using (var dbContext = Database.CreateContext())
         {
+            var user = await dbContext.Set<User>().FirstAsync();
+
+            var member = new Member
+            {
+                ProjectId = project.Id,
+                UserId = user.Id,
+                Role = MemberRole.Viewer
+            };
+
             await dbContext.Set<Project>().AddAsync(project);
+            await dbContext.Set<Member>().AddAsync(member);
             await dbContext.SaveChangesAsync();
         }
 
