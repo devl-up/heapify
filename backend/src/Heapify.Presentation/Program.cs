@@ -9,6 +9,7 @@ using Heapify.Presentation.Auth.Routes;
 using Heapify.Presentation.Common.AuthorizationHandlers;
 using Heapify.Presentation.Projects.Routes;
 using Heapify.Presentation.Users.Services;
+using Heapify.Presentation.WorkItems.Routes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
@@ -111,6 +112,7 @@ public sealed class Program
 
         v1.MapAuthRoutes();
         v1.MapProjectRoutes();
+        v1.MapWorkItemRoutes();
 
         if (app.Environment.IsDevelopment())
         {

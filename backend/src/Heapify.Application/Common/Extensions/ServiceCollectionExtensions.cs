@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using Heapify.Application.Projects.Services;
+using Heapify.Application.WorkItems.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Heapify.Application.Common.Extensions;
@@ -13,7 +14,8 @@ public static class ServiceCollectionExtensions
         {
             return services
                 .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true)
-                .AddTransient<IProjectService, ProjectService>();
+                .AddTransient<IProjectService, ProjectService>()
+                .AddTransient<IWorkItemService, WorkItemService>();
         }
     }
 }

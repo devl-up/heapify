@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
                 builder.UseNpgsql(connectionString)
                     .UseSnakeCaseNamingConvention());
 
-            services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
             return services;
         }
