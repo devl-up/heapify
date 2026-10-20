@@ -13,8 +13,9 @@ import type { CreateWorkItemRequest } from "@/api/work-items/types";
 const schema = z.object({
   title: z
     .string()
-    .min(1, "Title is required")
-    .max(100, "Title must be at most 100 characters long"),
+    .trim()
+    .min(1, { message: "Title is required" })
+    .max(100, { message: "Title must be at most 100 characters long" }),
 });
 
 export const Route = createFileRoute("/_authenticated/projects/$id/work-items/create/")({
