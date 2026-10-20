@@ -1,7 +1,9 @@
-﻿using Heapify.Application.Projects.DTO;
+﻿using System.Security.Claims;
+using Heapify.Application.Projects.DTO;
 using Heapify.Application.Projects.Services;
 using Heapify.Presentation.Common.Enums;
-using Heapify.Presentation.Common.Extensions;
+using Heapify.Presentation.Common.Requirements;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Heapify.Presentation.Projects.Routes;
@@ -16,24 +18,31 @@ internal static class ProjectRoutes
                 .WithTags("Projects");
 
             group.MapGet("",
-                async ([FromServices] IProjectService service, [AsParameters] GetProjectsRequest request,
+                async (IProjectService service, [AsParameters] GetProjectsRequest request,
                     CancellationToken cancellationToken) =>
                 {
                     var response = await service.GetAllAsync(request, cancellationToken);
                     return Results.Ok(response);
                 });
 
-            group.MapGet("{projectId:guid}", async ([FromServices] IProjectService service, [FromRoute] Guid projectId,
-                    CancellationToken cancellationToken) =>
+            group.MapGet("{id:guid}", async (ClaimsPrincipal user, IAuthorizationService authorizationService,
+                IProjectService service, [FromRoute] Guid id, CancellationToken cancellationToken) =>
+            {
+                var authorizationResult =
+                    await authorizationService.AuthorizeAsync(user, id,
+                        new PermissionRequirement(ProjectPermission.Read));
+
+                if (!authorizationResult.Succeeded)
                 {
-                    var response = await service.GetAsync(projectId, cancellationToken);
-                    return Results.Ok(response);
-                })
-                .RequireProjectPermission(ProjectPermission.Read);
+                    return Results.Forbid();
+                }
+
+                var response = await service.GetAsync(id, cancellationToken);
+                return Results.Ok(response);
+            });
 
             group.MapPost("",
-                async ([FromServices] IProjectService service, [FromBody] CreateProjectRequest request,
-                    CancellationToken cancellationToken) =>
+                async (IProjectService service, CreateProjectRequest request, CancellationToken cancellationToken) =>
                 {
                     var id = await service.CreateAsync(request, cancellationToken);
                     return Results.Created($"/api/v1/projects/{id}", null);

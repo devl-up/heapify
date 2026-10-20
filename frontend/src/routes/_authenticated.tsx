@@ -25,7 +25,7 @@ function AuthenticatedComponent() {
 
   const userQuery = Route.useLoaderData();
 
-  const projectMatch = useMatch({ from: "/_authenticated/projects/$id/", shouldThrow: false });
+  const projectMatch = useMatch({ from: "/_authenticated/projects/$id", shouldThrow: false });
   const project = projectMatch?.loaderData;
 
   const logoutMutation = useMutation({

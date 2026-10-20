@@ -24,7 +24,8 @@ internal sealed class ProjectService(
         var project = new Project
         {
             Id = Guid.CreateVersion7(),
-            Name = request.Name
+            Name = request.Name,
+            NextNumber = 1
         };
 
         var member = new Member
@@ -81,5 +82,19 @@ internal sealed class ProjectService(
                 Name = p.Name
             })
             .FirstAsync(cancellationToken);
+    }
+
+    public async Task<long> ReserveNextNumberAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var numbers = await dbContext
+            .SqlQuery<int>($"""
+                            UPDATE project
+                            SET next_number = next_number + 1
+                            WHERE id = {id}
+                            RETURNING next_number - 1
+                            """)
+            .ToListAsync(cancellationToken);
+
+        return numbers.Single();
     }
 }

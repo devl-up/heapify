@@ -57,6 +57,12 @@ namespace Heapify.Infrastructure.Common.Data.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("name");
 
+                    b.Property<long>("NextNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(1L)
+                        .HasColumnName("next_number");
+
                     b.HasKey("Id")
                         .HasName("pk_project");
 
@@ -177,6 +183,28 @@ namespace Heapify.Infrastructure.Common.Data.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Heapify.Domain.WorkItems.Entities.WorkItem", b =>
+                {
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("project_id");
+
+                    b.Property<long>("Number")
+                        .HasColumnType("bigint")
+                        .HasColumnName("number");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("title");
+
+                    b.HasKey("ProjectId", "Number")
+                        .HasName("pk_work_item");
+
+                    b.ToTable("work_item", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -324,6 +352,16 @@ namespace Heapify.Infrastructure.Common.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_member_asp_net_users_user_id");
+                });
+
+            modelBuilder.Entity("Heapify.Domain.WorkItems.Entities.WorkItem", b =>
+                {
+                    b.HasOne("Heapify.Domain.Projects.Entities.Project", null)
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_work_item_project_project_id");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

@@ -25,12 +25,14 @@ public sealed class GetProjectsTests(IntegrationTestFixture fixture)
             new()
             {
                 Id = Guid.CreateVersion7(),
-                Name = "Project 1"
+                Name = "Project 1",
+                NextNumber = 1
             },
             new()
             {
                 Id = Guid.CreateVersion7(),
-                Name = "Project 2"
+                Name = "Project 2",
+                NextNumber = 1
             }
         };
 
@@ -42,7 +44,7 @@ public sealed class GetProjectsTests(IntegrationTestFixture fixture)
             {
                 ProjectId = p.Id,
                 UserId = user.Id,
-                Role = MemberRole.Admin
+                Role = MemberRole.Viewer
             });
 
             await dbContext.Set<Project>().AddRangeAsync(projects);

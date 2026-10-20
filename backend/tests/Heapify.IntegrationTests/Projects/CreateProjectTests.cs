@@ -38,7 +38,8 @@ public sealed class CreateProjectTests(IntegrationTestFixture fixture)
         var expectedProject = new Project
         {
             Id = id,
-            Name = request.Name
+            Name = request.Name,
+            NextNumber = 1
         };
 
         await using var context = Database.CreateContext();

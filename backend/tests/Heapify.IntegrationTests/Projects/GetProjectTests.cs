@@ -21,7 +21,8 @@ public sealed class GetProjectTests(IntegrationTestFixture fixture) : Integratio
         var project = new Project
         {
             Id = Guid.CreateVersion7(),
-            Name = "Project 1"
+            Name = "Project 1",
+            NextNumber = 1
         };
 
         await using (var dbContext = Database.CreateContext())
@@ -32,7 +33,7 @@ public sealed class GetProjectTests(IntegrationTestFixture fixture) : Integratio
             {
                 ProjectId = project.Id,
                 UserId = user.Id,
-                Role = MemberRole.Admin
+                Role = MemberRole.Viewer
             };
 
             await dbContext.Set<Project>().AddAsync(project);
@@ -56,7 +57,7 @@ public sealed class GetProjectTests(IntegrationTestFixture fixture) : Integratio
     }
     
     [Fact]
-    public async Task Get_Project_ReturnsForbidden_WhenNotMember()
+    public async Task Get_Project_ReturnsForbidden_WhenNotViewer()
     {
         // Arrange
         using var client = await CreateClient()
@@ -65,7 +66,8 @@ public sealed class GetProjectTests(IntegrationTestFixture fixture) : Integratio
         var project = new Project
         {
             Id = Guid.CreateVersion7(),
-            Name = "Project 1"
+            Name = "Project 1",
+            NextNumber = 1
         };
 
         await using (var dbContext = Database.CreateContext())
