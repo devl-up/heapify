@@ -45,7 +45,8 @@ function RouteComponent() {
       onDynamic: schema,
     },
     onSubmit: async ({ value }) => {
-      await createMutation.mutateAsync(value);
+      const data = schema.parse(value);
+      await createMutation.mutateAsync(data);
     },
   });
 
