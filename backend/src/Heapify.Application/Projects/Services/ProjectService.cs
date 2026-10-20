@@ -87,7 +87,7 @@ internal sealed class ProjectService(
     public async Task<long> ReserveNextNumberAsync(Guid id, CancellationToken cancellationToken)
     {
         var numbers = await dbContext
-            .SqlQuery<int>($"""
+            .SqlQuery<long>($"""
                             UPDATE project
                             SET next_number = next_number + 1
                             WHERE id = {id}
