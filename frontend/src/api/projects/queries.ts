@@ -11,6 +11,7 @@ export const getProjectsOptions = (request: GetProjectsRequest) => {
       const response = await projectApi.getAll(request, signal);
       return response.data;
     },
+    refetchOnMount: false,
   });
 };
 
@@ -21,5 +22,6 @@ export const getProjectOptions = (projectId: string) => {
       const response = await projectApi.get(projectId, signal);
       return response.data;
     },
+    refetchOnMount: false,
   });
 };

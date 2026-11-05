@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Eye, Plus } from "lucide-react";
 import { z } from "zod";
@@ -29,11 +30,17 @@ export const Route = createFileRoute("/_authenticated/projects/")({
   component: RouteComponent,
   validateSearch: searchSchema,
   loaderDeps: ({ search }) => ({ index: search.index, size: search.size }),
-  loader: ({ context, deps }) => context.queryClient.query(getProjectsOptions(deps)),
+  context: ({ deps }) => ({
+    getProjectsOptions: getProjectsOptions(deps),
+  }),
+  loader: async ({ context }) => {
+    await context.queryClient.query(context.getProjectsOptions);
+  },
 });
 
 function RouteComponent() {
-  const projectsQuery = Route.useLoaderData();
+  const { getProjectsOptions } = Route.useRouteContext();
+  const projectsQuery = useQuery(getProjectsOptions);
 
   return (
     <div className="flex flex-col gap-4">
@@ -52,7 +59,7 @@ function RouteComponent() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {projectsQuery.items.map((project) => (
+          {projectsQuery.data?.items?.map((project) => (
             <TableRow key={project.id}>
               <TableCell>{project.name}</TableCell>
               <TableCell>
