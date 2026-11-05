@@ -3,5 +3,10 @@ import { getProjectOptions } from "@/api/projects/queries";
 
 export const Route = createFileRoute("/_authenticated/projects/$id")({
   component: Outlet,
-  loader: ({ context, params }) => context.queryClient.query(getProjectOptions(params.id)),
+  context: (context) => ({
+    getProjectOptions: getProjectOptions(context.params.id),
+  }),
+  loader: async ({ context }) => {
+    await context.queryClient.query(context.getProjectOptions);
+  },
 });
