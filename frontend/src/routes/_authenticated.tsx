@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, Outlet, redirect, useMatch } from "@tanstack/react-router";
+import { ProjectBreadcrumb } from "./-components/project-breadcrumb";
 import { authApi } from "@/api/auth/api";
 import { meOptions } from "@/api/auth/queries";
 import { Button } from "@/components/ui/button";
@@ -27,7 +28,6 @@ function AuthenticatedComponent() {
   const userQuery = useQuery(meOptions);
 
   const projectMatch = useMatch({ from: "/_authenticated/projects/$id", shouldThrow: false });
-  const project = projectMatch?.loaderData;
 
   const logoutMutation = useMutation({
     mutationKey: ["logout"],
@@ -45,14 +45,7 @@ function AuthenticatedComponent() {
           <ButtonLink to="/" intent="ghost">
             {userQuery.data?.name}
           </ButtonLink>
-          {project && (
-            <>
-              <span>/</span>
-              <ButtonLink to="/projects/$id" params={{ id: project.id }} intent="ghost">
-                {project.name}
-              </ButtonLink>
-            </>
-          )}
+          {projectMatch && <ProjectBreadcrumb />}
         </div>
 
         <Button
