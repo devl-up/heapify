@@ -79,14 +79,6 @@ public sealed class Program
             options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
         });
 
-        if (builder.Environment.IsDevelopment())
-        {
-            var reverseProxyConfig = builder.Configuration.GetSection("ReverseProxy");
-
-            builder.Services.AddReverseProxy()
-                .LoadFromConfig(reverseProxyConfig);
-        }
-
         var app = builder.Build();
 
         app.UseExceptionHandler();
@@ -98,9 +90,6 @@ public sealed class Program
         }
 
         app.UseHttpsRedirection();
-        app.UseDefaultFiles();
-        app.UseStaticFiles();
-
         app.UseAuthentication();
         app.UseAuthorization();
 
@@ -113,15 +102,6 @@ public sealed class Program
         v1.MapAuthRoutes();
         v1.MapProjectRoutes();
         v1.MapWorkItemRoutes();
-
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapReverseProxy();
-        }
-        else
-        {
-            app.MapFallbackToFile("index.html");
-        }
 
         app.Run();
     }

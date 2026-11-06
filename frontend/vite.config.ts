@@ -7,6 +7,15 @@ import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://localhost:7156",
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "./src"),
@@ -23,8 +32,4 @@ export default defineConfig({
     }),
     tailwindcss(),
   ],
-  build: {
-    outDir: path.resolve(import.meta.dirname, "../backend/src/Heapify.Presentation/wwwroot"),
-    emptyOutDir: true,
-  },
 });
