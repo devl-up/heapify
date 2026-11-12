@@ -1,5 +1,6 @@
 ﻿using Heapify.IntegrationTests.Common.Fixtures;
 using Heapify.Presentation;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Heapify.IntegrationTests.Common;
