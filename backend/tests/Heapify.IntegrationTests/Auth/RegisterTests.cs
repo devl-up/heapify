@@ -4,6 +4,7 @@ using Heapify.IntegrationTests.Common.Extensions;
 using Heapify.IntegrationTests.Common.Fixtures;
 using Heapify.Presentation.Auth.DTO;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Heapify.IntegrationTests.Auth;
 
