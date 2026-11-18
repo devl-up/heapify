@@ -1,6 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button-link";
+import {
+  TableHeader,
+  TableBody,
+  TableCell,
+  Table,
+  TableHead,
+  TableRow,
+} from "@/components/ui/table";
 
 export const Route = createFileRoute("/_authenticated/projects/$id/")({
   component: RouteComponent,
@@ -8,13 +17,35 @@ export const Route = createFileRoute("/_authenticated/projects/$id/")({
 
 function RouteComponent() {
   const params = Route.useParams();
+  const { getWorkItemsOptions } = Route.useRouteContext();
+
+  const workItemsQuery = useQuery(getWorkItemsOptions);
 
   return (
-    <div className="flex items-center justify-end">
-      <ButtonLink to="/projects/$id/work-items/create" params={{ id: params.id }}>
-        <Plus />
-        Create Work Item
-      </ButtonLink>
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl">Work Items</h1>
+        <ButtonLink to="/projects/$id/work-items/create" params={{ id: params.id }}>
+          <Plus />
+          Create Work Item
+        </ButtonLink>
+      </div>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableHeader className="w-14 text-center">#</TableHeader>
+            <TableHeader>Title</TableHeader>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {workItemsQuery.data?.items?.map((workItem) => (
+            <TableRow key={workItem.number}>
+              <TableCell className="text-center">{workItem.number}</TableCell>
+              <TableCell>{workItem.title}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </div>
   );
 }

@@ -25,12 +25,14 @@ export const Route = createFileRoute("/_authenticated/projects/$id/work-items/cr
 function RouteComponent() {
   const navigate = Route.useNavigate();
   const params = Route.useParams();
+  const { getWorkItemsOptions } = Route.useRouteContext();
 
   const createMutation = useMutation({
     mutationKey: ["create-work-item"],
     mutationFn: (request: CreateWorkItemRequest) => workItemsApi.create(request),
-    onSuccess: async () => {
+    onSuccess: async (_variables, _data, _result, context) => {
       await navigate({ to: "/projects/$id", params: { id: params.id } });
+      await context.client.invalidateQueries({ queryKey: getWorkItemsOptions.queryKey });
     },
   });
 

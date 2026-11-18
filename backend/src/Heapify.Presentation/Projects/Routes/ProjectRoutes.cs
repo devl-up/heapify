@@ -1,6 +1,8 @@
 ﻿using System.Security.Claims;
 using Heapify.Application.Projects.DTO;
 using Heapify.Application.Projects.Services;
+using Heapify.Application.WorkItems.DTO;
+using Heapify.Application.WorkItems.Services;
 using Heapify.Presentation.Common.Enums;
 using Heapify.Presentation.Common.Requirements;
 using Microsoft.AspNetCore.Authorization;
@@ -18,9 +20,15 @@ internal static class ProjectRoutes
                 .WithTags("Projects");
 
             group.MapGet("",
-                async (IProjectService service, [AsParameters] GetProjectsRequest request,
+                async (IProjectService service, [FromQuery] int index, [FromQuery] int size,
                     CancellationToken cancellationToken) =>
                 {
+                    var request = new GetProjectsRequest
+                    {
+                        Index = index,
+                        Size = size
+                    };
+
                     var response = await service.GetAllAsync(request, cancellationToken);
                     return Results.Ok(response);
                 });
@@ -40,6 +48,31 @@ internal static class ProjectRoutes
                 var response = await service.GetAsync(id, cancellationToken);
                 return Results.Ok(response);
             });
+
+            group.MapGet("{id:guid}/work-items",
+                async (ClaimsPrincipal user, IAuthorizationService authorizationService, IWorkItemService service,
+                    [FromRoute] Guid id, [FromQuery] int index, [FromQuery] int size,
+                    CancellationToken cancellationToken) =>
+                {
+                    var authorizationResult =
+                        await authorizationService.AuthorizeAsync(user, id,
+                            new PermissionRequirement(ProjectPermission.Read));
+
+                    if (!authorizationResult.Succeeded)
+                    {
+                        return Results.Forbid();
+                    }
+
+                    var request = new GetWorkItemsRequest
+                    {
+                        ProjectId = id,
+                        Index = index,
+                        Size = size
+                    };
+
+                    var response = await service.GetAllAsync(request, cancellationToken);
+                    return Results.Ok(response);
+                });
 
             group.MapPost("",
                 async (IProjectService service, CreateProjectRequest request, CancellationToken cancellationToken) =>
