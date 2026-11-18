@@ -15,7 +15,7 @@ const Pagination = ({ totalCount, page, onPaginationChange }: PaginationProps) =
   const hasPrevious = useMemo(() => page.index > 0, [page.index]);
 
   const hasNext = useMemo(
-    () => page.index < Math.ceil(totalCount / page.size) - 1,
+    () => page.size > 0 && page.index < Math.ceil(totalCount / page.size) - 1,
     [page.index, totalCount, page.size],
   );
 
@@ -33,10 +33,10 @@ const Pagination = ({ totalCount, page, onPaginationChange }: PaginationProps) =
     <div className="flex items-center justify-between border p-2">
       <div>Total: {totalCount}</div>
       <div className="flex gap-2">
-        <Button intent="icon" onClick={previous} disabled={!hasPrevious}>
+        <Button intent="icon" aria-label="Previous page" onClick={previous} disabled={!hasPrevious}>
           <ChevronLeft />
         </Button>
-        <Button intent="icon" onClick={next} disabled={!hasNext}>
+        <Button intent="icon" aria-label="Next page" onClick={next} disabled={!hasNext}>
           <ChevronRight />
         </Button>
       </div>
