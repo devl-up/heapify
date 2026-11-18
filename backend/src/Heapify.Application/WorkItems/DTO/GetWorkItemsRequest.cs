@@ -10,9 +10,9 @@ public sealed class GetWorkItemsRequest
     public required Guid ProjectId { get; init; }
 }
 
-internal sealed class GetProjectsRequestValidator : AbstractValidator<GetWorkItemsRequest>
+internal sealed class GetWorkItemsRequestValidator : AbstractValidator<GetWorkItemsRequest>
 {
-    public GetProjectsRequestValidator()
+    public GetWorkItemsRequestValidator()
     {
         RuleFor(x => x.Index)
             .ValidatePageIndex();
