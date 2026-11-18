@@ -112,6 +112,7 @@ public sealed class Program
 
         if (!app.Environment.IsDevelopment())
         {
+            app.MapFallback("/api/{**path}", () => Results.NotFound());
             app.MapFallbackToFile("index.html");
         }
 
