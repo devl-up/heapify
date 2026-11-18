@@ -32,4 +32,8 @@ export default defineConfig({
     }),
     tailwindcss(),
   ],
+  build: {
+    outDir: path.resolve(import.meta.dirname, "../backend/src/Heapify.Presentation/wwwroot"),
+    emptyOutDir: true,
+  },
 });
