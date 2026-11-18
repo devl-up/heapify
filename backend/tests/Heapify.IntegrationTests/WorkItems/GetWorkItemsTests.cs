@@ -110,7 +110,7 @@ public sealed class GetWorkItemsTests(IntegrationTestFixture fixture) : Integrat
         }
 
         // Act
-        var response = await client.GetAsync($"/api/v1/projects/{project.Id}?index=0&size=1");
+        var response = await client.GetAsync($"/api/v1/projects/{project.Id}/work-items?index=0&size=1");
 
         // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);

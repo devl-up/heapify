@@ -5,6 +5,7 @@ import { z } from "zod";
 import { getProjectsOptions } from "@/api/projects/queries";
 import { ButtonLink } from "@/components/ui/button-link";
 import { NavLink } from "@/components/ui/nav-link";
+import { Pagination } from "@/components/ui/pagination";
 import {
   Table,
   TableBody,
@@ -39,6 +40,8 @@ export const Route = createFileRoute("/_authenticated/projects/")({
 });
 
 function RouteComponent() {
+  const { index, size } = Route.useSearch();
+  const navigate = Route.useNavigate();
   const { getProjectsOptions } = Route.useRouteContext();
   const projectsQuery = useQuery(getProjectsOptions);
 
@@ -71,6 +74,13 @@ function RouteComponent() {
           ))}
         </TableBody>
       </Table>
+      <Pagination
+        page={{ index, size }}
+        onPaginationChange={async (page) => {
+          await navigate({ search: page });
+        }}
+        totalCount={projectsQuery.data?.totalCount ?? 0}
+      />
     </div>
   );
 }

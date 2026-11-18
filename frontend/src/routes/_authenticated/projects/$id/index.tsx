@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button-link";
+import { Pagination } from "@/components/ui/pagination";
 import {
   TableHeader,
   TableBody,
@@ -16,6 +17,8 @@ export const Route = createFileRoute("/_authenticated/projects/$id/")({
 });
 
 function RouteComponent() {
+  const { index, size } = Route.useSearch();
+  const navigate = Route.useNavigate();
   const params = Route.useParams();
   const { getWorkItemsOptions } = Route.useRouteContext();
 
@@ -46,6 +49,13 @@ function RouteComponent() {
           ))}
         </TableBody>
       </Table>
+      <Pagination
+        page={{ index, size }}
+        onPaginationChange={async (page) => {
+          await navigate({ search: page });
+        }}
+        totalCount={workItemsQuery.data?.totalCount ?? 0}
+      />
     </div>
   );
 }
