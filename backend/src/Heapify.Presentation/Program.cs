@@ -90,6 +90,13 @@ public sealed class Program
         }
 
         app.UseHttpsRedirection();
+
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+        }
+
         app.UseAuthentication();
         app.UseAuthorization();
 
@@ -102,6 +109,11 @@ public sealed class Program
         v1.MapAuthRoutes();
         v1.MapProjectRoutes();
         v1.MapWorkItemRoutes();
+
+        if (!app.Environment.IsDevelopment())
+        {
+            app.MapFallbackToFile("index.html");
+        }
 
         app.Run();
     }
