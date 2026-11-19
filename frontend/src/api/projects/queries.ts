@@ -6,9 +6,11 @@ import type { GetWorkItemsRequest } from "../work-items/types";
 import type { WorkItemResponse } from "../work-items/types";
 import type { GetProjectsRequest, ProjectResponse } from "./types";
 
+export const getProjectsKey = ["projects"] as const;
+
 export const getProjectsOptions = (request: GetProjectsRequest) => {
   return queryOptions<PaginatedResponse<ProjectResponse>>({
-    queryKey: ["projects", request],
+    queryKey: [...getProjectsKey, request],
     queryFn: async ({ signal }) => {
       const response = await projectApi.getAll(request, signal);
       return response.data;
@@ -17,9 +19,11 @@ export const getProjectsOptions = (request: GetProjectsRequest) => {
   });
 };
 
+export const getProjectKey = (projectId: string) => ["project", projectId] as const;
+
 export const getProjectOptions = (projectId: string) => {
   return queryOptions<ProjectResponse>({
-    queryKey: ["project", projectId],
+    queryKey: getProjectKey(projectId),
     queryFn: async ({ signal }) => {
       const response = await projectApi.get(projectId, signal);
       return response.data;

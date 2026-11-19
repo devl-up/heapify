@@ -6,25 +6,16 @@ import { getProjectWorkItemsOptions } from "@/api/projects/queries";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Pagination } from "@/components/ui/pagination";
 import {
-  TableHeader,
+  Table,
   TableBody,
   TableCell,
-  Table,
   TableHead,
+  TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  INDEX_MIN_VALUE,
-  DEFAULT_PAGE_INDEX,
-  PAGE_MIN_VALUE,
-  PAGE_MAX_VALUE,
-  DEFAULT_PAGE_SIZE,
-} from "@/lib/page";
+import { pageSchema } from "@/lib/page";
 
-const searchSchema = z.object({
-  index: z.int().gte(INDEX_MIN_VALUE).default(DEFAULT_PAGE_INDEX),
-  size: z.int().gte(PAGE_MIN_VALUE).lte(PAGE_MAX_VALUE).default(DEFAULT_PAGE_SIZE),
-});
+const searchSchema = z.object({ ...pageSchema.shape });
 
 export const Route = createFileRoute("/_authenticated/projects/$id/")({
   component: RouteComponent,

@@ -4,6 +4,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { z } from "zod";
 import { projectApi } from "@/api/projects/api";
+import { getProjectsKey } from "@/api/projects/queries";
 import { Alert } from "@/components/ui/alert";
 import { NavLink } from "@/components/ui/nav-link";
 import { useAppForm } from "@/hooks/use-app-form";
@@ -28,8 +29,9 @@ function RouteComponent() {
   const createMutation = useMutation({
     mutationKey: ["create-project"],
     mutationFn: (request: CreateProjectRequest) => projectApi.create(request),
-    onSuccess: async () => {
+    onSuccess: async (_data, _variables, _result, context) => {
       await navigate({ to: "/projects" });
+      await context.client.invalidateQueries({ queryKey: getProjectsKey });
     },
   });
 

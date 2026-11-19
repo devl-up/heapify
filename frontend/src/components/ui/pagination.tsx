@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { Button } from "./button";
 
 interface PaginationProps {
@@ -12,7 +12,7 @@ interface PaginationProps {
 }
 
 const Pagination = ({ totalCount, page, onPaginationChange }: PaginationProps) => {
-  const totalPages = Math.ceil(totalCount / page.size);
+  const totalPages = Math.max(1, Math.ceil(totalCount / page.size));
   const hasPrevious = page.index > 0;
   const hasNext = page.size > 0 && page.index < totalPages - 1;
 

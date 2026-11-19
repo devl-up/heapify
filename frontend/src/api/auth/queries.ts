@@ -3,9 +3,11 @@ import { authApi } from "./api";
 
 import type { UserResponse } from "./types";
 
+export const meKey = ["auth", "me"] as const;
+
 export const meOptions = () => {
   return queryOptions<UserResponse | null>({
-    queryKey: ["auth", "me"],
+    queryKey: meKey,
     queryFn: async () => {
       const response = await authApi.me();
       return response.data;

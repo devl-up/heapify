@@ -14,18 +14,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DEFAULT_PAGE_INDEX,
-  DEFAULT_PAGE_SIZE,
-  INDEX_MIN_VALUE,
-  PAGE_MAX_VALUE,
-  PAGE_MIN_VALUE,
-} from "@/lib/page";
+import { pageSchema } from "@/lib/page";
 
-const searchSchema = z.object({
-  index: z.number().gte(INDEX_MIN_VALUE).default(DEFAULT_PAGE_INDEX),
-  size: z.number().gte(PAGE_MIN_VALUE).lte(PAGE_MAX_VALUE).default(DEFAULT_PAGE_SIZE),
-});
+const searchSchema = z.object({ ...pageSchema.shape });
 
 export const Route = createFileRoute("/_authenticated/projects/")({
   component: RouteComponent,
