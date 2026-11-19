@@ -5,6 +5,7 @@ import { z } from "zod";
 import { getProjectsOptions } from "@/api/projects/queries";
 import { ButtonLink } from "@/components/ui/button-link";
 import { NavLink } from "@/components/ui/nav-link";
+import { Pagination } from "@/components/ui/pagination";
 import {
   Table,
   TableBody,
@@ -13,18 +14,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DEFAULT_PAGE_INDEX,
-  DEFAULT_PAGE_SIZE,
-  INDEX_MIN_VALUE,
-  PAGE_MAX_VALUE,
-  PAGE_MIN_VALUE,
-} from "@/lib/page";
+import { pageSchema } from "@/lib/page";
 
-const searchSchema = z.object({
-  index: z.number().gte(INDEX_MIN_VALUE).default(DEFAULT_PAGE_INDEX),
-  size: z.number().gte(PAGE_MIN_VALUE).lte(PAGE_MAX_VALUE).default(DEFAULT_PAGE_SIZE),
-});
+const searchSchema = z.object({ ...pageSchema.shape });
 
 export const Route = createFileRoute("/_authenticated/projects/")({
   component: RouteComponent,
@@ -39,6 +31,8 @@ export const Route = createFileRoute("/_authenticated/projects/")({
 });
 
 function RouteComponent() {
+  const { index, size } = Route.useSearch();
+  const navigate = Route.useNavigate();
   const { getProjectsOptions } = Route.useRouteContext();
   const projectsQuery = useQuery(getProjectsOptions);
 
@@ -71,6 +65,13 @@ function RouteComponent() {
           ))}
         </TableBody>
       </Table>
+      <Pagination
+        page={{ index, size }}
+        onPaginationChange={async (page) => {
+          await navigate({ search: page });
+        }}
+        totalCount={projectsQuery.data?.totalCount ?? 0}
+      />
     </div>
   );
 }

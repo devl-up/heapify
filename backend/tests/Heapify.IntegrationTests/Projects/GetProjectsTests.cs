@@ -52,8 +52,13 @@ public sealed class GetProjectsTests(IntegrationTestFixture fixture)
             await dbContext.SaveChangesAsync();
         }
 
+        const int index = 0;
+        const int size = 1;
+
         // Act
-        var response = await client.GetFromJsonAsync<PaginatedResponse<ProjectResponse>>("/api/v1/projects?index=0&size=10");
+        var response =
+            await client.GetFromJsonAsync<PaginatedResponse<ProjectResponse>>(
+                $"/api/v1/projects?index={index}&size={size}");
 
         // Assert
         Assert.NotNull(response);
@@ -61,11 +66,16 @@ public sealed class GetProjectsTests(IntegrationTestFixture fixture)
         var expectedTotalCount = projects.Count;
         Assert.Equal(expectedTotalCount, response.TotalCount);
 
-        var expectedProjects = projects.Select(p => new ProjectResponse
-        {
-            Id = p.Id,
-            Name = p.Name
-        });
+        var expectedProjects = projects
+            .OrderBy(p => p.Name, StringComparer.InvariantCulture)
+            .Select(p => new ProjectResponse
+            {
+                Id = p.Id,
+                Name = p.Name
+            })
+            .Skip(index * size)
+            .Take(size)
+            .ToList();
 
         Assert.Equivalent(expectedProjects, response.Items);
     }

@@ -1,6 +1,7 @@
 import apiClient from "../api-client";
 
 import type { PaginatedResponse } from "../common/types";
+import type { GetWorkItemsRequest } from "../work-items/types";
 import type { CreateProjectRequest, GetProjectsRequest, ProjectResponse } from "./types";
 
 const url = "/api/v1/projects";
@@ -16,6 +17,17 @@ const get = async (projectId: string, signal?: AbortSignal) => {
   return await apiClient.get<ProjectResponse>(`${url}/${projectId}`, { signal });
 };
 
+const getAllWorkItems = async (
+  projectId: string,
+  request: GetWorkItemsRequest,
+  signal?: AbortSignal,
+) => {
+  return await apiClient.get(
+    `${url}/${projectId}/work-items?index=${request.index}&size=${request.size}`,
+    { signal },
+  );
+};
+
 const create = async (request: CreateProjectRequest, signal?: AbortSignal) => {
   return await apiClient.post(`${url}`, request, { signal });
 };
@@ -24,4 +36,5 @@ export const projectApi = {
   create,
   getAll,
   get,
+  getAllWorkItems,
 };

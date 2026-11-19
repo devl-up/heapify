@@ -3,6 +3,7 @@ import { getProjectOptions } from "@/api/projects/queries";
 
 export const Route = createFileRoute("/_authenticated/projects/$id")({
   component: Outlet,
+
   context: (context) => ({
     getProjectOptions: getProjectOptions(context.params.id),
   }),

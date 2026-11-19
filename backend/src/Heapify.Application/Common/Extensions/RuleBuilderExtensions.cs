@@ -8,7 +8,8 @@ internal static class RuleBuilderExtensions
     public static IRuleBuilderOptions<T, int> ValidatePageIndex<T>(this IRuleBuilder<T, int> ruleBuilder)
     {
         return ruleBuilder
-            .GreaterThanOrEqualTo(PageConstants.MinimumIndex);
+            .GreaterThanOrEqualTo(PageConstants.MinimumIndex)
+            .LessThanOrEqualTo(PageConstants.MaximumIndex);
     }
 
     public static IRuleBuilderOptions<T, int> ValidatePageSize<T>(this IRuleBuilder<T, int> ruleBuilder)
