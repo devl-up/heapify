@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
+import z from "zod";
+import { getProjectWorkItemsOptions } from "@/api/projects/queries";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Pagination } from "@/components/ui/pagination";
 import {
@@ -11,9 +13,32 @@ import {
   TableHead,
   TableRow,
 } from "@/components/ui/table";
+import {
+  INDEX_MIN_VALUE,
+  DEFAULT_PAGE_INDEX,
+  PAGE_MIN_VALUE,
+  PAGE_MAX_VALUE,
+  DEFAULT_PAGE_SIZE,
+} from "@/lib/page";
+
+const searchSchema = z.object({
+  index: z.int().gte(INDEX_MIN_VALUE).default(DEFAULT_PAGE_INDEX),
+  size: z.int().gte(PAGE_MIN_VALUE).lte(PAGE_MAX_VALUE).default(DEFAULT_PAGE_SIZE),
+});
 
 export const Route = createFileRoute("/_authenticated/projects/$id/")({
   component: RouteComponent,
+  validateSearch: searchSchema,
+  loaderDeps: ({ search }) => ({ index: search.index, size: search.size }),
+  context: (context) => ({
+    getWorkItemsOptions: getProjectWorkItemsOptions(context.params.id, {
+      index: context.deps.index,
+      size: context.deps.size,
+    }),
+  }),
+  loader: async ({ context }) => {
+    await context.queryClient.query(context.getWorkItemsOptions);
+  },
 });
 
 function RouteComponent() {

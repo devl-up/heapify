@@ -28,9 +28,12 @@ export const getProjectOptions = (projectId: string) => {
   });
 };
 
+export const projectWorkItemsKey = (projectId: string) =>
+  ["project", projectId, "work-items"] as const;
+
 export const getProjectWorkItemsOptions = (projectId: string, request: GetWorkItemsRequest) => {
   return queryOptions<PaginatedResponse<WorkItemResponse>>({
-    queryKey: ["project", projectId, "work-items", request],
+    queryKey: [...projectWorkItemsKey(projectId), request],
     queryFn: async ({ signal }) => {
       const response = await projectApi.getAllWorkItems(projectId, request, signal);
       return response.data;

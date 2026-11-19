@@ -12,12 +12,9 @@ interface PaginationProps {
 }
 
 const Pagination = ({ totalCount, page, onPaginationChange }: PaginationProps) => {
-  const hasPrevious = useMemo(() => page.index > 0, [page.index]);
-
-  const hasNext = useMemo(
-    () => page.size > 0 && page.index < Math.ceil(totalCount / page.size) - 1,
-    [page.index, totalCount, page.size],
-  );
+  const totalPages = Math.ceil(totalCount / page.size);
+  const hasPrevious = page.index > 0;
+  const hasNext = page.size > 0 && page.index < totalPages - 1;
 
   const previous = useCallback(async () => {
     if (!hasPrevious) return;
@@ -32,7 +29,10 @@ const Pagination = ({ totalCount, page, onPaginationChange }: PaginationProps) =
   return (
     <div className="flex items-center justify-between border p-2">
       <div>Total: {totalCount}</div>
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
+        <div>
+          Page: {page.index + 1} of {totalPages}
+        </div>
         <Button intent="icon" aria-label="Previous page" onClick={previous} disabled={!hasPrevious}>
           <ChevronLeft />
         </Button>
