@@ -57,7 +57,7 @@ function RouteComponent() {
             <TableRow key={project.id}>
               <TableCell>{project.name}</TableCell>
               <TableCell>
-                <NavLink to="/projects/$id" params={{ id: project.id }} intent="icon">
+                <NavLink to="/projects/$projectId" params={{ projectId: project.id }} intent="icon">
                   <Eye />
                 </NavLink>
               </TableCell>

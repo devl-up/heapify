@@ -2,9 +2,12 @@ import { queryOptions } from "@tanstack/react-query";
 import { projectApi } from "./api";
 
 import type { PaginatedResponse } from "../common/types";
-import type { GetWorkItemsRequest } from "../work-items/types";
-import type { WorkItemResponse } from "../work-items/types";
-import type { GetProjectsRequest, ProjectResponse } from "./types";
+import type {
+  GetProjectsRequest,
+  GetWorkItemsRequest,
+  ProjectResponse,
+  WorkItemResponse,
+} from "./types";
 
 export const getProjectsKey = ["projects"] as const;
 
@@ -40,6 +43,20 @@ export const getProjectWorkItemsOptions = (projectId: string, request: GetWorkIt
     queryKey: [...projectWorkItemsKey(projectId), request],
     queryFn: async ({ signal }) => {
       const response = await projectApi.getAllWorkItems(projectId, request, signal);
+      return response.data;
+    },
+    refetchOnMount: false,
+  });
+};
+
+export const getProjectWorkItemKey = (projectId: string, workItemNumber: number) =>
+  ["project", projectId, "work-items", workItemNumber] as const;
+
+export const getProjectWorkItemOptions = (projectId: string, workItemNumber: number) => {
+  return queryOptions<WorkItemResponse>({
+    queryKey: getProjectWorkItemKey(projectId, workItemNumber),
+    queryFn: async ({ signal }) => {
+      const response = await projectApi.getWorkItem(projectId, workItemNumber, signal);
       return response.data;
     },
     refetchOnMount: false,

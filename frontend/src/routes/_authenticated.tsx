@@ -27,7 +27,10 @@ function AuthenticatedComponent() {
   const { meOptions } = Route.useRouteContext();
   const userQuery = useQuery(meOptions);
 
-  const projectMatch = useMatch({ from: "/_authenticated/projects/$id", shouldThrow: false });
+  const projectMatch = useMatch({
+    from: "/_authenticated/projects/$projectId",
+    shouldThrow: false,
+  });
 
   const logoutMutation = useMutation({
     mutationKey: ["logout"],

@@ -14,16 +14,17 @@ internal sealed class WorkItemService(
     IValidator<CreateWorkItemRequest> createWorkItemValidator,
     IValidator<GetWorkItemsRequest> getWorkItemsValidator) : IWorkItemService
 {
-    public async Task<long> CreateAsync(CreateWorkItemRequest request, CancellationToken cancellationToken)
+    public async Task<long> CreateAsync(Guid projectId, CreateWorkItemRequest request,
+        CancellationToken cancellationToken)
     {
         await createWorkItemValidator.ValidateAndThrowAsync(request, cancellationToken);
 
         await using var transaction = await dbContext.BeginTransactionAsync();
 
-        var number = await projectService.ReserveNextNumberAsync(request.ProjectId, cancellationToken);
+        var number = await projectService.ReserveNextNumberAsync(projectId, cancellationToken);
         var workItem = new WorkItem
         {
-            ProjectId = request.ProjectId,
+            ProjectId = projectId,
             Number = number,
             Title = request.Title
         };
@@ -61,5 +62,17 @@ internal sealed class WorkItemService(
             TotalCount = totalCount,
             Items = items
         };
+    }
+
+    public async Task<WorkItemResponse> GetAsync(Guid projectId, long number, CancellationToken cancellationToken)
+    {
+        return await dbContext.Set<WorkItem>()
+            .Where(w => w.ProjectId == projectId && w.Number == number)
+            .Select(w => new WorkItemResponse
+            {
+                Number = w.Number,
+                Title = w.Title
+            })
+            .FirstAsync(cancellationToken);
     }
 }

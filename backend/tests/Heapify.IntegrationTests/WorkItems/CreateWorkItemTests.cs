@@ -49,9 +49,8 @@ public sealed class CreateWorkItemTests(IntegrationTestFixture fixture)
         const string title = "Test Work Item";
 
         var tasks = Enumerable.Range(0, numberOfRequests)
-            .Select(_ => client.PostAsJsonAsync("/api/v1/work-items", new CreateWorkItemRequest
+            .Select(_ => client.PostAsJsonAsync($"/api/v1/project/{project.Id}/work-items", new CreateWorkItemRequest
             {
-                ProjectId = project.Id,
                 Title = title
             }))
             .ToList();
@@ -124,12 +123,11 @@ public sealed class CreateWorkItemTests(IntegrationTestFixture fixture)
 
         var request = new CreateWorkItemRequest
         {
-            ProjectId = project.Id,
             Title = "Test Work Item"
         };
 
         // Act
-        var response = await client.PostAsJsonAsync("/api/v1/work-items", request);
+        var response = await client.PostAsJsonAsync($"/api/v1/project/{project.Id}/work-items", request);
 
         // Assert
         Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
