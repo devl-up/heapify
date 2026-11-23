@@ -75,7 +75,8 @@ function RouteComponent() {
                   }}
                   intent="icon"
                 >
-                  <Eye />
+                  <Eye aria-hidden="true" />
+                  <span className="sr-only">View work item {workItem.number}</span>
                 </NavLink>
               </TableCell>
             </TableRow>
