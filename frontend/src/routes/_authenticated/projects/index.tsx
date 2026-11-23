@@ -58,7 +58,8 @@ function RouteComponent() {
               <TableCell>{project.name}</TableCell>
               <TableCell>
                 <NavLink to="/projects/$projectId" params={{ projectId: project.id }} intent="icon">
-                  <Eye />
+                  <Eye aria-hidden="true" />
+                  <span className="sr-only">View project {project.name}</span>
                 </NavLink>
               </TableCell>
             </TableRow>
