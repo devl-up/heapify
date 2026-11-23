@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Plus } from "lucide-react";
+import { Eye, Plus } from "lucide-react";
 import z from "zod";
 import { getProjectWorkItemsOptions } from "@/api/projects/queries";
 import { ButtonLink } from "@/components/ui/button-link";
+import { NavLink } from "@/components/ui/nav-link";
 import { Pagination } from "@/components/ui/pagination";
 import {
   Table,
@@ -17,12 +18,12 @@ import { pageSchema } from "@/lib/page";
 
 const searchSchema = z.object({ ...pageSchema.shape });
 
-export const Route = createFileRoute("/_authenticated/projects/$id/")({
+export const Route = createFileRoute("/_authenticated/projects/$projectId/")({
   component: RouteComponent,
   validateSearch: searchSchema,
   loaderDeps: ({ search }) => ({ index: search.index, size: search.size }),
   context: (context) => ({
-    getWorkItemsOptions: getProjectWorkItemsOptions(context.params.id, {
+    getWorkItemsOptions: getProjectWorkItemsOptions(context.params.projectId, {
       index: context.deps.index,
       size: context.deps.size,
     }),
@@ -44,7 +45,10 @@ function RouteComponent() {
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl">Work Items</h1>
-        <ButtonLink to="/projects/$id/work-items/create" params={{ id: params.id }}>
+        <ButtonLink
+          to="/projects/$projectId/work-items/create"
+          params={{ projectId: params.projectId }}
+        >
           <Plus />
           Create Work Item
         </ButtonLink>
@@ -54,6 +58,7 @@ function RouteComponent() {
           <TableRow>
             <TableHeader className="w-14 text-center">#</TableHeader>
             <TableHeader>Title</TableHeader>
+            <TableHeader className="w-14" />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -61,6 +66,19 @@ function RouteComponent() {
             <TableRow key={workItem.number}>
               <TableCell className="text-center">{workItem.number}</TableCell>
               <TableCell>{workItem.title}</TableCell>
+              <TableCell>
+                <NavLink
+                  to="/projects/$projectId/work-items/$workItemNumber"
+                  params={{
+                    projectId: params.projectId,
+                    workItemNumber: workItem.number.toString(),
+                  }}
+                  intent="icon"
+                >
+                  <Eye aria-hidden="true" />
+                  <span className="sr-only">View work item {workItem.number}</span>
+                </NavLink>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

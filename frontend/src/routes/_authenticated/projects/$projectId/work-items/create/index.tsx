@@ -3,13 +3,13 @@ import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { z } from "zod";
+import { projectApi } from "@/api/projects/api";
 import { projectWorkItemsKey } from "@/api/projects/queries";
-import { workItemsApi } from "@/api/work-items/api";
 import { Alert } from "@/components/ui/alert";
 import { NavLink } from "@/components/ui/nav-link";
 import { useAppForm } from "@/hooks/use-app-form";
 
-import type { CreateWorkItemRequest } from "@/api/work-items/types";
+import type { CreateWorkItemRequest } from "@/api/projects/types";
 
 const schema = z.object({
   title: z
@@ -19,7 +19,7 @@ const schema = z.object({
     .max(100, { message: "Title must be at most 100 characters long" }),
 });
 
-export const Route = createFileRoute("/_authenticated/projects/$id/work-items/create/")({
+export const Route = createFileRoute("/_authenticated/projects/$projectId/work-items/create/")({
   component: RouteComponent,
 });
 
@@ -29,10 +29,11 @@ function RouteComponent() {
 
   const createMutation = useMutation({
     mutationKey: ["create-work-item"],
-    mutationFn: (request: CreateWorkItemRequest) => workItemsApi.create(request),
+    mutationFn: (request: CreateWorkItemRequest) =>
+      projectApi.createWorkItem(params.projectId, request),
     onSuccess: async (_variables, _data, _result, context) => {
-      await navigate({ to: "/projects/$id", params: { id: params.id } });
-      await context.client.invalidateQueries({ queryKey: projectWorkItemsKey(params.id) });
+      await navigate({ to: "/projects/$projectId", params: { projectId: params.projectId } });
+      await context.client.invalidateQueries({ queryKey: projectWorkItemsKey(params.projectId) });
     },
   });
 
@@ -49,13 +50,13 @@ function RouteComponent() {
     },
     onSubmit: async ({ value }) => {
       const data = schema.parse(value);
-      await createMutation.mutateAsync({ projectId: params.id, title: data.title });
+      await createMutation.mutateAsync({ title: data.title });
     },
   });
 
   return (
     <div className="flex flex-col gap-4">
-      <NavLink to="/projects/$id" params={{ id: params.id }}>
+      <NavLink to="/projects/$projectId" params={{ projectId: params.projectId }}>
         <ChevronLeft /> Back
       </NavLink>
       <h1 className="text-2xl">Create Work Item</h1>

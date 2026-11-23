@@ -14,10 +14,11 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as RegisterIndexRouteImport } from './routes/register/index'
 import { Route as AuthenticatedProjectsIndexRouteImport } from './routes/_authenticated/projects/index'
-import { Route as AuthenticatedProjectsIdRouteRouteImport } from './routes/_authenticated/projects/$id/route'
-import { Route as AuthenticatedProjectsIdIndexRouteImport } from './routes/_authenticated/projects/$id/index'
+import { Route as AuthenticatedProjectsProjectIdRouteRouteImport } from './routes/_authenticated/projects/$projectId/route'
+import { Route as AuthenticatedProjectsProjectIdIndexRouteImport } from './routes/_authenticated/projects/$projectId/index'
 import { Route as AuthenticatedProjectsCreateIndexRouteImport } from './routes/_authenticated/projects/create/index'
-import { Route as AuthenticatedProjectsIdWorkItemsCreateIndexRouteImport } from './routes/_authenticated/projects/$id/work-items/create/index'
+import { Route as AuthenticatedProjectsProjectIdWorkItemsWorkItemNumberIndexRouteImport } from './routes/_authenticated/projects/$projectId/work-items/$workItemNumber/index'
+import { Route as AuthenticatedProjectsProjectIdWorkItemsCreateIndexRouteImport } from './routes/_authenticated/projects/$projectId/work-items/create/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -44,17 +45,17 @@ const AuthenticatedProjectsIndexRoute =
     path: '/projects/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedProjectsIdRouteRoute =
-  AuthenticatedProjectsIdRouteRouteImport.update({
-    id: '/projects/$id',
-    path: '/projects/$id',
+const AuthenticatedProjectsProjectIdRouteRoute =
+  AuthenticatedProjectsProjectIdRouteRouteImport.update({
+    id: '/projects/$projectId',
+    path: '/projects/$projectId',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedProjectsIdIndexRoute =
-  AuthenticatedProjectsIdIndexRouteImport.update({
+const AuthenticatedProjectsProjectIdIndexRoute =
+  AuthenticatedProjectsProjectIdIndexRouteImport.update({
     id: '/',
     path: '/',
-    getParentRoute: () => AuthenticatedProjectsIdRouteRoute,
+    getParentRoute: () => AuthenticatedProjectsProjectIdRouteRoute,
   } as any)
 const AuthenticatedProjectsCreateIndexRoute =
   AuthenticatedProjectsCreateIndexRouteImport.update({
@@ -62,31 +63,39 @@ const AuthenticatedProjectsCreateIndexRoute =
     path: '/projects/create/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedProjectsIdWorkItemsCreateIndexRoute =
-  AuthenticatedProjectsIdWorkItemsCreateIndexRouteImport.update({
+const AuthenticatedProjectsProjectIdWorkItemsWorkItemNumberIndexRoute =
+  AuthenticatedProjectsProjectIdWorkItemsWorkItemNumberIndexRouteImport.update({
+    id: '/work-items/$workItemNumber/',
+    path: '/work-items/$workItemNumber/',
+    getParentRoute: () => AuthenticatedProjectsProjectIdRouteRoute,
+  } as any)
+const AuthenticatedProjectsProjectIdWorkItemsCreateIndexRoute =
+  AuthenticatedProjectsProjectIdWorkItemsCreateIndexRouteImport.update({
     id: '/work-items/create/',
     path: '/work-items/create/',
-    getParentRoute: () => AuthenticatedProjectsIdRouteRoute,
+    getParentRoute: () => AuthenticatedProjectsProjectIdRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login/': typeof LoginIndexRoute
   '/register/': typeof RegisterIndexRoute
-  '/projects/$id': typeof AuthenticatedProjectsIdRouteRouteWithChildren
+  '/projects/$projectId': typeof AuthenticatedProjectsProjectIdRouteRouteWithChildren
   '/projects/': typeof AuthenticatedProjectsIndexRoute
-  '/projects/$id/': typeof AuthenticatedProjectsIdIndexRoute
+  '/projects/$projectId/': typeof AuthenticatedProjectsProjectIdIndexRoute
   '/projects/create/': typeof AuthenticatedProjectsCreateIndexRoute
-  '/projects/$id/work-items/create/': typeof AuthenticatedProjectsIdWorkItemsCreateIndexRoute
+  '/projects/$projectId/work-items/$workItemNumber/': typeof AuthenticatedProjectsProjectIdWorkItemsWorkItemNumberIndexRoute
+  '/projects/$projectId/work-items/create/': typeof AuthenticatedProjectsProjectIdWorkItemsCreateIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginIndexRoute
   '/register': typeof RegisterIndexRoute
   '/projects': typeof AuthenticatedProjectsIndexRoute
-  '/projects/$id': typeof AuthenticatedProjectsIdIndexRoute
+  '/projects/$projectId': typeof AuthenticatedProjectsProjectIdIndexRoute
   '/projects/create': typeof AuthenticatedProjectsCreateIndexRoute
-  '/projects/$id/work-items/create': typeof AuthenticatedProjectsIdWorkItemsCreateIndexRoute
+  '/projects/$projectId/work-items/$workItemNumber': typeof AuthenticatedProjectsProjectIdWorkItemsWorkItemNumberIndexRoute
+  '/projects/$projectId/work-items/create': typeof AuthenticatedProjectsProjectIdWorkItemsCreateIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -94,11 +103,12 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login/': typeof LoginIndexRoute
   '/register/': typeof RegisterIndexRoute
-  '/_authenticated/projects/$id': typeof AuthenticatedProjectsIdRouteRouteWithChildren
+  '/_authenticated/projects/$projectId': typeof AuthenticatedProjectsProjectIdRouteRouteWithChildren
   '/_authenticated/projects/': typeof AuthenticatedProjectsIndexRoute
-  '/_authenticated/projects/$id/': typeof AuthenticatedProjectsIdIndexRoute
+  '/_authenticated/projects/$projectId/': typeof AuthenticatedProjectsProjectIdIndexRoute
   '/_authenticated/projects/create/': typeof AuthenticatedProjectsCreateIndexRoute
-  '/_authenticated/projects/$id/work-items/create/': typeof AuthenticatedProjectsIdWorkItemsCreateIndexRoute
+  '/_authenticated/projects/$projectId/work-items/$workItemNumber/': typeof AuthenticatedProjectsProjectIdWorkItemsWorkItemNumberIndexRoute
+  '/_authenticated/projects/$projectId/work-items/create/': typeof AuthenticatedProjectsProjectIdWorkItemsCreateIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -106,31 +116,34 @@ export interface FileRouteTypes {
     | '/'
     | '/login/'
     | '/register/'
-    | '/projects/$id'
+    | '/projects/$projectId'
     | '/projects/'
-    | '/projects/$id/'
+    | '/projects/$projectId/'
     | '/projects/create/'
-    | '/projects/$id/work-items/create/'
+    | '/projects/$projectId/work-items/$workItemNumber/'
+    | '/projects/$projectId/work-items/create/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/register'
     | '/projects'
-    | '/projects/$id'
+    | '/projects/$projectId'
     | '/projects/create'
-    | '/projects/$id/work-items/create'
+    | '/projects/$projectId/work-items/$workItemNumber'
+    | '/projects/$projectId/work-items/create'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login/'
     | '/register/'
-    | '/_authenticated/projects/$id'
+    | '/_authenticated/projects/$projectId'
     | '/_authenticated/projects/'
-    | '/_authenticated/projects/$id/'
+    | '/_authenticated/projects/$projectId/'
     | '/_authenticated/projects/create/'
-    | '/_authenticated/projects/$id/work-items/create/'
+    | '/_authenticated/projects/$projectId/work-items/$workItemNumber/'
+    | '/_authenticated/projects/$projectId/work-items/create/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -177,19 +190,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjectsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/projects/$id': {
-      id: '/_authenticated/projects/$id'
-      path: '/projects/$id'
-      fullPath: '/projects/$id'
-      preLoaderRoute: typeof AuthenticatedProjectsIdRouteRouteImport
+    '/_authenticated/projects/$projectId': {
+      id: '/_authenticated/projects/$projectId'
+      path: '/projects/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof AuthenticatedProjectsProjectIdRouteRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/projects/$id/': {
-      id: '/_authenticated/projects/$id/'
+    '/_authenticated/projects/$projectId/': {
+      id: '/_authenticated/projects/$projectId/'
       path: '/'
-      fullPath: '/projects/$id/'
-      preLoaderRoute: typeof AuthenticatedProjectsIdIndexRouteImport
-      parentRoute: typeof AuthenticatedProjectsIdRouteRoute
+      fullPath: '/projects/$projectId/'
+      preLoaderRoute: typeof AuthenticatedProjectsProjectIdIndexRouteImport
+      parentRoute: typeof AuthenticatedProjectsProjectIdRouteRoute
     }
     '/_authenticated/projects/create/': {
       id: '/_authenticated/projects/create/'
@@ -198,42 +211,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProjectsCreateIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/projects/$id/work-items/create/': {
-      id: '/_authenticated/projects/$id/work-items/create/'
+    '/_authenticated/projects/$projectId/work-items/$workItemNumber/': {
+      id: '/_authenticated/projects/$projectId/work-items/$workItemNumber/'
+      path: '/work-items/$workItemNumber'
+      fullPath: '/projects/$projectId/work-items/$workItemNumber/'
+      preLoaderRoute: typeof AuthenticatedProjectsProjectIdWorkItemsWorkItemNumberIndexRouteImport
+      parentRoute: typeof AuthenticatedProjectsProjectIdRouteRoute
+    }
+    '/_authenticated/projects/$projectId/work-items/create/': {
+      id: '/_authenticated/projects/$projectId/work-items/create/'
       path: '/work-items/create'
-      fullPath: '/projects/$id/work-items/create/'
-      preLoaderRoute: typeof AuthenticatedProjectsIdWorkItemsCreateIndexRouteImport
-      parentRoute: typeof AuthenticatedProjectsIdRouteRoute
+      fullPath: '/projects/$projectId/work-items/create/'
+      preLoaderRoute: typeof AuthenticatedProjectsProjectIdWorkItemsCreateIndexRouteImport
+      parentRoute: typeof AuthenticatedProjectsProjectIdRouteRoute
     }
   }
 }
 
-interface AuthenticatedProjectsIdRouteRouteChildren {
-  AuthenticatedProjectsIdIndexRoute: typeof AuthenticatedProjectsIdIndexRoute
-  AuthenticatedProjectsIdWorkItemsCreateIndexRoute: typeof AuthenticatedProjectsIdWorkItemsCreateIndexRoute
+interface AuthenticatedProjectsProjectIdRouteRouteChildren {
+  AuthenticatedProjectsProjectIdIndexRoute: typeof AuthenticatedProjectsProjectIdIndexRoute
+  AuthenticatedProjectsProjectIdWorkItemsWorkItemNumberIndexRoute: typeof AuthenticatedProjectsProjectIdWorkItemsWorkItemNumberIndexRoute
+  AuthenticatedProjectsProjectIdWorkItemsCreateIndexRoute: typeof AuthenticatedProjectsProjectIdWorkItemsCreateIndexRoute
 }
 
-const AuthenticatedProjectsIdRouteRouteChildren: AuthenticatedProjectsIdRouteRouteChildren =
+const AuthenticatedProjectsProjectIdRouteRouteChildren: AuthenticatedProjectsProjectIdRouteRouteChildren =
   {
-    AuthenticatedProjectsIdIndexRoute: AuthenticatedProjectsIdIndexRoute,
-    AuthenticatedProjectsIdWorkItemsCreateIndexRoute:
-      AuthenticatedProjectsIdWorkItemsCreateIndexRoute,
+    AuthenticatedProjectsProjectIdIndexRoute:
+      AuthenticatedProjectsProjectIdIndexRoute,
+    AuthenticatedProjectsProjectIdWorkItemsWorkItemNumberIndexRoute:
+      AuthenticatedProjectsProjectIdWorkItemsWorkItemNumberIndexRoute,
+    AuthenticatedProjectsProjectIdWorkItemsCreateIndexRoute:
+      AuthenticatedProjectsProjectIdWorkItemsCreateIndexRoute,
   }
 
-const AuthenticatedProjectsIdRouteRouteWithChildren =
-  AuthenticatedProjectsIdRouteRoute._addFileChildren(
-    AuthenticatedProjectsIdRouteRouteChildren,
+const AuthenticatedProjectsProjectIdRouteRouteWithChildren =
+  AuthenticatedProjectsProjectIdRouteRoute._addFileChildren(
+    AuthenticatedProjectsProjectIdRouteRouteChildren,
   )
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedProjectsIdRouteRoute: typeof AuthenticatedProjectsIdRouteRouteWithChildren
+  AuthenticatedProjectsProjectIdRouteRoute: typeof AuthenticatedProjectsProjectIdRouteRouteWithChildren
   AuthenticatedProjectsIndexRoute: typeof AuthenticatedProjectsIndexRoute
   AuthenticatedProjectsCreateIndexRoute: typeof AuthenticatedProjectsCreateIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedProjectsIdRouteRoute:
-    AuthenticatedProjectsIdRouteRouteWithChildren,
+  AuthenticatedProjectsProjectIdRouteRoute:
+    AuthenticatedProjectsProjectIdRouteRouteWithChildren,
   AuthenticatedProjectsIndexRoute: AuthenticatedProjectsIndexRoute,
   AuthenticatedProjectsCreateIndexRoute: AuthenticatedProjectsCreateIndexRoute,
 }

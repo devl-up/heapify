@@ -4,7 +4,7 @@ import { ButtonLink } from "@/components/ui/button-link";
 
 function ProjectBreadcrumb() {
   const { getProjectOptions } = useRouteContext({
-    from: "/_authenticated/projects/$id",
+    from: "/_authenticated/projects/$projectId",
   });
 
   const projectQuery = useQuery(getProjectOptions);
@@ -16,7 +16,11 @@ function ProjectBreadcrumb() {
   return (
     <>
       <span>/</span>
-      <ButtonLink to="/projects/$id" params={{ id: projectQuery.data.id }} intent="ghost">
+      <ButtonLink
+        to="/projects/$projectId"
+        params={{ projectId: projectQuery.data.id }}
+        intent="ghost"
+      >
         {projectQuery.data?.name}
       </ButtonLink>
     </>
