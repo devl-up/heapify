@@ -7,21 +7,12 @@ export interface GetProjectsRequest {
   readonly size: number;
 }
 
-export interface ProjectResponse {
+export interface GetProjectsResponse {
   readonly id: string;
   readonly name: string;
 }
 
-export interface CreateWorkItemRequest {
-  readonly title: string;
-}
-
-export interface GetWorkItemsRequest {
-  readonly index: number;
-  readonly size: number;
-}
-
-export interface WorkItemResponse {
-  readonly number: number;
-  readonly title: string;
+export interface GetProjectResponse {
+  readonly id: string;
+  readonly name: string;
 }

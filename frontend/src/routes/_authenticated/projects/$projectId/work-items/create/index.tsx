@@ -3,13 +3,13 @@ import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft } from "lucide-react";
 import { z } from "zod";
-import { projectApi } from "@/api/projects/api";
-import { projectWorkItemsKey } from "@/api/projects/queries";
+import { workItemApi } from "@/api/work-items/api";
+import { workItemsKey } from "@/api/work-items/queries";
 import { Alert } from "@/components/ui/alert";
 import { NavLink } from "@/components/ui/nav-link";
 import { useAppForm } from "@/hooks/use-app-form";
 
-import type { CreateWorkItemRequest } from "@/api/projects/types";
+import type { CreateWorkItemRequest } from "@/api/work-items/types";
 
 const schema = z.object({
   title: z
@@ -29,11 +29,10 @@ function RouteComponent() {
 
   const createMutation = useMutation({
     mutationKey: ["create-work-item"],
-    mutationFn: (request: CreateWorkItemRequest) =>
-      projectApi.createWorkItem(params.projectId, request),
+    mutationFn: (request: CreateWorkItemRequest) => workItemApi.create(params.projectId, request),
     onSuccess: async (_variables, _data, _result, context) => {
       await navigate({ to: "/projects/$projectId", params: { projectId: params.projectId } });
-      await context.client.invalidateQueries({ queryKey: projectWorkItemsKey(params.projectId) });
+      await context.client.invalidateQueries({ queryKey: workItemsKey(params.projectId) });
     },
   });
 

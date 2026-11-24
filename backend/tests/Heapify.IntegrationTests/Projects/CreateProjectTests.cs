@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Heapify.Application.Projects.DTO;
+using Heapify.Application.Projects.Commands.CreateProject;
 using Heapify.Domain.Projects.Entities;
 using Heapify.Domain.Projects.Enums;
 using Heapify.IntegrationTests.Common;

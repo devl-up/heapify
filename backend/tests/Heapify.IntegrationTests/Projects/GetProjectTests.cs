@@ -1,4 +1,5 @@
-﻿using Heapify.Application.Projects.DTO;
+﻿using System.Net;
+using Heapify.Application.Projects.Queries.GetProject;
 using Heapify.Domain.Projects.Entities;
 using Heapify.Domain.Projects.Enums;
 using Heapify.Domain.Users.Entities;
@@ -42,12 +43,12 @@ public sealed class GetProjectTests(IntegrationTestFixture fixture) : Integratio
         }
 
         // Act
-        var response = await client.GetFromJsonAsync<ProjectResponse>($"/api/v1/projects/{project.Id}");
+        var response = await client.GetFromJsonAsync<GetProjectResponse>($"/api/v1/projects/{project.Id}");
 
         // Assert
         Assert.NotNull(response);
 
-        var expectedProject = new ProjectResponse
+        var expectedProject = new GetProjectResponse
         {
             Id = project.Id,
             Name = project.Name
@@ -55,7 +56,7 @@ public sealed class GetProjectTests(IntegrationTestFixture fixture) : Integratio
 
         Assert.Equivalent(expectedProject, response);
     }
-    
+
     [Fact]
     public async Task Get_Project_ReturnsForbidden_WhenNotViewer()
     {
@@ -80,6 +81,6 @@ public sealed class GetProjectTests(IntegrationTestFixture fixture) : Integratio
         var response = await client.GetAsync($"/api/v1/projects/{project.Id}");
 
         // Assert
-        Assert.Equal(System.Net.HttpStatusCode.Forbidden, response.StatusCode);
+        Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
     }
 }

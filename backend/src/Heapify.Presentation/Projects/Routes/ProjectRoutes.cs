@@ -1,12 +1,15 @@
 ﻿using System.Security.Claims;
-using Heapify.Application.Projects.DTO;
-using Heapify.Application.Projects.Services;
-using Heapify.Application.WorkItems.DTO;
-using Heapify.Application.WorkItems.Services;
+using Heapify.Application.Projects.Commands.CreateProject;
+using Heapify.Application.Projects.Queries.GetProject;
+using Heapify.Application.Projects.Queries.GetProjects;
+using Heapify.Application.WorkItems.Commands.CreateWorkItem;
+using Heapify.Application.WorkItems.Queries.GetWorkItem;
+using Heapify.Application.WorkItems.Queries.GetWorkItems;
 using Heapify.Presentation.Common.Enums;
 using Heapify.Presentation.Common.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CreateWorkItemRequest = Heapify.Application.WorkItems.Commands.CreateWorkItem.CreateWorkItemRequest;
 
 namespace Heapify.Presentation.Projects.Routes;
 
@@ -16,11 +19,11 @@ internal static class ProjectRoutes
     {
         public void MapProjectRoutes()
         {
-            var projectsEndpoints = endpoints.MapGroup("projects")
+            var group = endpoints.MapGroup("projects")
                 .WithTags("Projects");
 
-            projectsEndpoints.MapGet("",
-                async (IProjectService service, [FromQuery] int index, [FromQuery] int size,
+            group.MapGet("",
+                async (GetProjectsHandler handler, [FromQuery] int index, [FromQuery] int size,
                     CancellationToken cancellationToken) =>
                 {
                     var request = new GetProjectsRequest
@@ -29,21 +32,20 @@ internal static class ProjectRoutes
                         Size = size
                     };
 
-                    var response = await service.GetAllAsync(request, cancellationToken);
+                    var response = await handler.HandleAsync(request, cancellationToken);
                     return Results.Ok(response);
                 });
 
-            projectsEndpoints.MapPost("",
-                async (IProjectService service, CreateProjectRequest request, CancellationToken cancellationToken) =>
-                {
-                    var id = await service.CreateAsync(request, cancellationToken);
-                    return Results.Created($"/api/v1/projects/{id}", null);
-                });
+            group.MapPost("", async (CreateProjectHandler handler, CreateProjectRequest request,
+                CancellationToken cancellationToken) =>
+            {
+                var id = await handler.HandleAsync(request, cancellationToken);
+                return Results.Created($"/api/v1/projects/{id}", null);
+            });
 
-            var projectDetailEndpoints = projectsEndpoints.MapGroup("{id:guid}");
 
-            projectDetailEndpoints.MapGet("", async (ClaimsPrincipal user, IAuthorizationService authorizationService,
-                IProjectService service, [FromRoute] Guid id, CancellationToken cancellationToken) =>
+            group.MapGet("{id:guid}", async (ClaimsPrincipal user, IAuthorizationService authorizationService,
+                GetProjectHandler handler, [FromRoute] Guid id, CancellationToken cancellationToken) =>
             {
                 var authorizationResult =
                     await authorizationService.AuthorizeAsync(user, id,
@@ -54,19 +56,18 @@ internal static class ProjectRoutes
                     return Results.Forbid();
                 }
 
-                var response = await service.GetAsync(id, cancellationToken);
+                var request = new GetProjectRequest
+                {
+                    Id = id
+                };
+
+                var response = await handler.HandleAsync(request, cancellationToken);
+
                 return Results.Ok(response);
             });
 
-            projectDetailEndpoints.MapProjectWorkItemRoutes();
-        }
-
-        private void MapProjectWorkItemRoutes()
-        {
-            var projectWorkItemsEndpoints = endpoints.MapGroup("work-items");
-
-            projectWorkItemsEndpoints.MapGet("",
-                async (ClaimsPrincipal user, IAuthorizationService authorizationService, IWorkItemService service,
+            group.MapGet("{id:guid}/work-items",
+                async (ClaimsPrincipal user, IAuthorizationService authorizationService, GetWorkItemsHandler handler,
                     [FromRoute] Guid id, [FromQuery] int index, [FromQuery] int size,
                     CancellationToken cancellationToken) =>
                 {
@@ -86,12 +87,12 @@ internal static class ProjectRoutes
                         Size = size
                     };
 
-                    var response = await service.GetAllAsync(request, cancellationToken);
+                    var response = await handler.HandleAsync(request, cancellationToken);
                     return Results.Ok(response);
                 });
 
-            projectWorkItemsEndpoints.MapGet("{number:long}",
-                async (ClaimsPrincipal user, IAuthorizationService authorizationService, IWorkItemService service,
+            group.MapGet("{id:guid}/work-items/{number:long}",
+                async (ClaimsPrincipal user, IAuthorizationService authorizationService, GetWorkItemHandler handler,
                     [FromRoute] Guid id, [FromRoute] long number,
                     CancellationToken cancellationToken) =>
                 {
@@ -104,13 +105,19 @@ internal static class ProjectRoutes
                         return Results.Forbid();
                     }
 
-                    var response = await service.GetAsync(id, number, cancellationToken);
+                    var request = new GetWorkItemRequest
+                    {
+                        ProjectId = id,
+                        Number = number
+                    };
+
+                    var response = await handler.HandleAsync(request, cancellationToken);
                     return Results.Ok(response);
                 });
 
-            projectWorkItemsEndpoints.MapPost("",
-                async (ClaimsPrincipal user, IAuthorizationService authorizationService, IWorkItemService service,
-                    Guid id, [FromBody] CreateWorkItemRequest request, CancellationToken cancellationToken) =>
+            group.MapPost("{id:guid}/work-items",
+                async (ClaimsPrincipal user, IAuthorizationService authorizationService, CreateWorkItemHandler handler,
+                    Guid id, [FromBody] Requests.CreateWorkItemRequest request, CancellationToken cancellationToken) =>
                 {
                     var authorizationResult = await authorizationService.AuthorizeAsync(user, id,
                         new PermissionRequirement(ProjectPermission.Write));
@@ -120,7 +127,13 @@ internal static class ProjectRoutes
                         return Results.Forbid();
                     }
 
-                    var number = await service.CreateAsync(id, request, cancellationToken);
+                    var applicationRequest = new CreateWorkItemRequest
+                    {
+                        ProjectId = id,
+                        Title = request.Title
+                    };
+
+                    var number = await handler.HandleAsync(applicationRequest, cancellationToken);
                     return Results.Created($"/api/v1/projects/{id}/work-items/{number}", null);
                 });
         }

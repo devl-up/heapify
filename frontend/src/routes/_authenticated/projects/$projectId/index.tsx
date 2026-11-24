@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Eye, Plus } from "lucide-react";
 import z from "zod";
-import { getProjectWorkItemsOptions } from "@/api/projects/queries";
+import { getWorkItemsOptions } from "@/api/work-items/queries";
 import { ButtonLink } from "@/components/ui/button-link";
 import { NavLink } from "@/components/ui/nav-link";
 import { Pagination } from "@/components/ui/pagination";
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/_authenticated/projects/$projectId/")({
   validateSearch: searchSchema,
   loaderDeps: ({ search }) => ({ index: search.index, size: search.size }),
   context: (context) => ({
-    getWorkItemsOptions: getProjectWorkItemsOptions(context.params.projectId, {
+    getWorkItemsOptions: getWorkItemsOptions(context.params.projectId, {
       index: context.deps.index,
       size: context.deps.size,
     }),

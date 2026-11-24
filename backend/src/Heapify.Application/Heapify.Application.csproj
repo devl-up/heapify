@@ -18,4 +18,8 @@
         <ProjectReference Include="..\Heapify.Domain\Heapify.Domain.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="WorkItems\Commands\" />
+    </ItemGroup>
+
 </Project>

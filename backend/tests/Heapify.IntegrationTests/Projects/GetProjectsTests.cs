@@ -1,5 +1,5 @@
 ﻿using Heapify.Application.Common.DTO;
-using Heapify.Application.Projects.DTO;
+using Heapify.Application.Projects.Queries.GetProjects;
 using Heapify.Domain.Projects.Entities;
 using Heapify.Domain.Projects.Enums;
 using Heapify.Domain.Users.Entities;
@@ -57,7 +57,7 @@ public sealed class GetProjectsTests(IntegrationTestFixture fixture)
 
         // Act
         var response =
-            await client.GetFromJsonAsync<PaginatedResponse<ProjectResponse>>(
+            await client.GetFromJsonAsync<PaginatedResponse<GetProjectsResponse>>(
                 $"/api/v1/projects?index={index}&size={size}");
 
         // Assert
@@ -68,7 +68,7 @@ public sealed class GetProjectsTests(IntegrationTestFixture fixture)
 
         var expectedProjects = projects
             .OrderBy(p => p.Name, StringComparer.InvariantCulture)
-            .Select(p => new ProjectResponse
+            .Select(p => new GetProjectsResponse
             {
                 Id = p.Id,
                 Name = p.Name
