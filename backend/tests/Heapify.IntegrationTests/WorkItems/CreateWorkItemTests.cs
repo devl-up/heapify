@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using Heapify.Application.WorkItems.DTO;
 using Heapify.Domain.Projects.Entities;
 using Heapify.Domain.Projects.Enums;
 using Heapify.Domain.Users.Entities;
@@ -7,6 +6,7 @@ using Heapify.Domain.WorkItems.Entities;
 using Heapify.IntegrationTests.Common;
 using Heapify.IntegrationTests.Common.Extensions;
 using Heapify.IntegrationTests.Common.Fixtures;
+using Heapify.Presentation.Projects.Requests;
 using Microsoft.EntityFrameworkCore;
 
 namespace Heapify.IntegrationTests.WorkItems;

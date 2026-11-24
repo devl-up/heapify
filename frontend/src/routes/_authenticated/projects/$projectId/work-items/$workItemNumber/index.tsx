@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { getProjectWorkItemOptions } from "@/api/projects/queries";
+import { getWorkItemOptions } from "@/api/work-items/queries";
 
 export const Route = createFileRoute(
   "/_authenticated/projects/$projectId/work-items/$workItemNumber/",
 )({
   component: RouteComponent,
   context: (context) => ({
-    getWorkItemOptions: getProjectWorkItemOptions(
+    getWorkItemOptions: getWorkItemOptions(
       context.params.projectId,
       Number(context.params.workItemNumber),
     ),
