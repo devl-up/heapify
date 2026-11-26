@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using Heapify.Application.Common.DTO;
-using Heapify.Application.WorkItems.Queries.GetWorkItems;
+using Heapify.Application.WorkItems.Queries;
 using Heapify.Domain.Projects.Entities;
 using Heapify.Domain.Projects.Enums;
 using Heapify.Domain.Users.Entities;
@@ -66,7 +66,7 @@ public sealed class GetWorkItemsTests(IntegrationTestFixture fixture) : Integrat
 
         // Act
         var response =
-            await client.GetFromJsonAsync<PaginatedResponse<GetWorkItemsResponse>>(
+            await client.GetFromJsonAsync<PaginatedResponse<GetWorkItems.Response>>(
                 $"/api/v1/projects/{project.Id}/work-items?index={index}&size={size}");
 
         // Assert
@@ -77,7 +77,7 @@ public sealed class GetWorkItemsTests(IntegrationTestFixture fixture) : Integrat
 
         var expectedWorkItems = workItems
             .OrderBy(wi => wi.Number)
-            .Select(wi => new GetWorkItemsResponse
+            .Select(wi => new GetWorkItems.Response
             {
                 Number = wi.Number,
                 Title = wi.Title

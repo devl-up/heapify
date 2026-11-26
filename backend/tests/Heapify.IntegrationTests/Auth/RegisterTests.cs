@@ -2,7 +2,7 @@
 using Heapify.IntegrationTests.Common;
 using Heapify.IntegrationTests.Common.Extensions;
 using Heapify.IntegrationTests.Common.Fixtures;
-using Heapify.Presentation.Auth.DTO;
+using Heapify.Presentation.Auth.Endpoints;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,7 +21,7 @@ public sealed class RegisterTests(IntegrationTestFixture fixture) : IntegrationT
         const string email = "test-2@heapify.dev";
         const string password = "Password234";
 
-        var registerRequest = new RegisterRequest { Username = username, Email = email, Password = password };
+        var registerRequest = new RegisterEndpoint.Request { Username = username, Email = email, Password = password };
 
         // Act
         var registerResponse = await client.PostAsJsonAsync("/api/v1/auth/register", registerRequest);

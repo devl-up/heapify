@@ -3,7 +3,7 @@ using Heapify.IntegrationTests.Common;
 using Heapify.IntegrationTests.Common.DTO;
 using Heapify.IntegrationTests.Common.Extensions;
 using Heapify.IntegrationTests.Common.Fixtures;
-using Heapify.Presentation.Auth.DTO;
+using Heapify.Presentation.Auth.Endpoints;
 
 namespace Heapify.IntegrationTests.Auth;
 
@@ -16,10 +16,10 @@ public sealed class GetMeTests(IntegrationTestFixture fixture) : IntegrationTest
         using var client = await CreateClient().AuthenticateAsync();
 
         // Act
-        var user = await client.GetFromJsonAsync<UserResponse>("/api/v1/auth/me");
+        var user = await client.GetFromJsonAsync<MeEndpoint.Response>("/api/v1/auth/me");
 
         // Assert
-        var expectedUser = new UserResponse { Name = TestUser.Username };
+        var expectedUser = new MeEndpoint.Response { Name = TestUser.Username };
         Assert.NotNull(user);
         Assert.Equivalent(expectedUser, user);
     }

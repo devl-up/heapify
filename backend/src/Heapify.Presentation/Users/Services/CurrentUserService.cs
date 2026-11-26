@@ -1,6 +1,6 @@
 ﻿using Heapify.Application.Users.DTO;
 using Heapify.Application.Users.Services;
-using Heapify.Presentation.Auth.Extensions;
+using Heapify.Presentation.Common.Extensions;
 
 namespace Heapify.Presentation.Users.Services;
 

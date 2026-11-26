@@ -1,13 +1,13 @@
+using System.Net;
 using System.Text.Json.Serialization;
 using Heapify.Application.Common.Extensions;
 using Heapify.Application.Users.Services;
 using Heapify.Domain.Users.Entities;
 using Heapify.Infrastructure.Common.Data;
 using Heapify.Infrastructure.Common.Extensions;
-using Heapify.Presentation.Auth.Filters;
-using Heapify.Presentation.Auth.Routes;
 using Heapify.Presentation.Common.AuthorizationHandlers;
-using Heapify.Presentation.Projects.Routes;
+using Heapify.Presentation.Common.Extensions;
+using Heapify.Presentation.Common.Filters;
 using Heapify.Presentation.Users.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -20,7 +20,24 @@ public sealed class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddOpenApi();
+        builder.Services.AddOpenApi(o =>
+        {
+            var defaultSchemaReferenceId = o.CreateSchemaReferenceId;
+
+            o.CreateSchemaReferenceId = t =>
+            {
+                if (t.Type.FullName == null || !t.Type.FullName.StartsWith("Heapify"))
+                {
+                    return defaultSchemaReferenceId(t);
+                }
+
+                return t.Type.FullName.Split('.')
+                    .Last()
+                    .Replace("Endpoint", string.Empty)
+                    .Replace("+", ".");
+            };
+        });
+
         builder.Services.AddInfrastructureLayer(builder.Configuration)
             .AddApplicationLayer();
 
@@ -86,6 +103,7 @@ public sealed class Program
         if (app.Environment.IsDevelopment())
         {
             app.MapOpenApi();
+            app.UseSwaggerUI(options => { options.SwaggerEndpoint("/openapi/v1.json", "v1"); });
         }
 
         app.UseHttpsRedirection();
@@ -105,8 +123,9 @@ public sealed class Program
 
         var v1 = api.MapGroup("v1");
 
-        v1.MapAuthRoutes();
-        v1.MapProjectRoutes();
+        v1.MapEndpoints();
+
+        api.ProducesProblem((int)HttpStatusCode.InternalServerError);
 
         if (!app.Environment.IsDevelopment())
         {

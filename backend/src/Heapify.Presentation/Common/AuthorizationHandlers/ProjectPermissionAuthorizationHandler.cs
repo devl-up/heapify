@@ -1,8 +1,8 @@
 ﻿using Heapify.Domain.Projects.Entities;
 using Heapify.Domain.Projects.Enums;
 using Heapify.Infrastructure.Common.Data;
-using Heapify.Presentation.Auth.Extensions;
 using Heapify.Presentation.Common.Enums;
+using Heapify.Presentation.Common.Extensions;
 using Heapify.Presentation.Common.Requirements;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;

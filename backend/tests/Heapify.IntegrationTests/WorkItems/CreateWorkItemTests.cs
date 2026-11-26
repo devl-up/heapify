@@ -6,7 +6,7 @@ using Heapify.Domain.WorkItems.Entities;
 using Heapify.IntegrationTests.Common;
 using Heapify.IntegrationTests.Common.Extensions;
 using Heapify.IntegrationTests.Common.Fixtures;
-using Heapify.Presentation.Projects.Requests;
+using Heapify.Presentation.WorkItems.Endpoints;
 using Microsoft.EntityFrameworkCore;
 
 namespace Heapify.IntegrationTests.WorkItems;
@@ -47,12 +47,14 @@ public sealed class CreateWorkItemTests(IntegrationTestFixture fixture)
         // Act
         const int numberOfRequests = 100;
         const string title = "Test Work Item";
+        
+        var request = new CreateWorkItemEndpoint.Request
+        {
+            Title = title
+        };
 
         var tasks = Enumerable.Range(0, numberOfRequests)
-            .Select(_ => client.PostAsJsonAsync($"/api/v1/projects/{project.Id}/work-items", new CreateWorkItemRequest
-            {
-                Title = title
-            }))
+            .Select(_ => client.PostAsJsonAsync($"/api/v1/projects/{project.Id}/work-items", request))
             .ToList();
 
         var responses = await Task.WhenAll(tasks);
@@ -121,7 +123,7 @@ public sealed class CreateWorkItemTests(IntegrationTestFixture fixture)
             await dbContext.SaveChangesAsync();
         }
 
-        var request = new CreateWorkItemRequest
+        var request = new CreateWorkItemEndpoint.Request
         {
             Title = "Test Work Item"
         };
