@@ -1,4 +1,5 @@
-﻿using Heapify.Application.Projects.Queries;
+﻿using Heapify.Application.Common.DTO;
+using Heapify.Application.Projects.Queries;
 using Heapify.Presentation.Common.Endpoints;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +10,7 @@ internal sealed class GetProjectsEndpoint : IEndpoint
     public static void Map(IEndpointRouteBuilder builder)
     {
         builder.MapGet("projects", HandleAsync)
-            .Produces<GetProjects.Response>()
+            .Produces<PaginatedResponse<GetProjects.Response>>()
             .WithTags("Projects");
     }
 

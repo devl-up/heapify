@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Security.Claims;
+using Heapify.Application.Common.DTO;
 using Heapify.Application.WorkItems.Queries;
 using Heapify.Presentation.Common.Endpoints;
 using Heapify.Presentation.Common.Enums;
@@ -14,7 +15,7 @@ internal sealed class GetWorkItemsEndpoint : IEndpoint
     public static void Map(IEndpointRouteBuilder builder)
     {
         builder.MapGet("projects/{id:guid}/work-items", HandleAsync)
-            .Produces<GetWorkItems.Response>()
+            .Produces<PaginatedResponse<GetWorkItems.Response>>()
             .Produces((int)HttpStatusCode.Forbidden)
             .WithTags("Projects");
     }

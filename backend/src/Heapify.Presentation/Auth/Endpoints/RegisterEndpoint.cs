@@ -13,7 +13,7 @@ internal sealed class RegisterEndpoint : IEndpoint
         builder.MapPost("auth/register", HandleAsync)
             .AllowAnonymous()
             .Produces((int)HttpStatusCode.OK)
-            .Produces((int)HttpStatusCode.Unauthorized)
+            .Produces((int)HttpStatusCode.BadRequest)
             .WithTags("Auth");
     }
 
