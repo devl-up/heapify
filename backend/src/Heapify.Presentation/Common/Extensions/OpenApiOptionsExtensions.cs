@@ -41,7 +41,7 @@ internal static class OpenApiOptionsExtensions
 
         if (type.DeclaringType is { } declaringType)
         {
-            name = $"{declaringType.Name}{type.Name}";
+            name = $"{GetSchemaName(declaringType)}{type.Name}";
         }
 
         return name;
