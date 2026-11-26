@@ -31,10 +31,30 @@ public sealed class Program
                     return defaultSchemaReferenceId(t);
                 }
 
-                return t.Type.FullName.Split('.')
-                    .Last()
-                    .Replace("Endpoint", string.Empty)
-                    .Replace("+", ".");
+                return GetSchemaName(t.Type);
+
+                static string GetSchemaName(Type type)
+                {
+                    if (type.IsArray)
+                    {
+                        return $"{GetSchemaName(type.GetElementType()!)}Array{type.GetArrayRank()}";
+                    }
+
+                    var name = type.Name.Split('`')[0]
+                        .Replace("Endpoint", string.Empty);
+
+                    if (type.DeclaringType is { } declaringType)
+                    {
+                        name = $"{GetSchemaName(declaringType)}.{name}";
+                    }
+
+                    if (type.IsGenericType)
+                    {
+                        name += $"Of{string.Join("And", type.GetGenericArguments().Select(GetSchemaName))}";
+                    }
+
+                    return name;
+                }
             };
         });
 
