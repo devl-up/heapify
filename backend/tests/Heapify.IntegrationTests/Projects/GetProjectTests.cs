@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Heapify.Application.Projects.Queries.GetProject;
+using Heapify.Application.Projects.Queries;
 using Heapify.Domain.Projects.Entities;
 using Heapify.Domain.Projects.Enums;
 using Heapify.Domain.Users.Entities;
@@ -43,12 +43,12 @@ public sealed class GetProjectTests(IntegrationTestFixture fixture) : Integratio
         }
 
         // Act
-        var response = await client.GetFromJsonAsync<GetProjectResponse>($"/api/v1/projects/{project.Id}");
+        var response = await client.GetFromJsonAsync<GetProject.Response>($"/api/v1/projects/{project.Id}");
 
         // Assert
         Assert.NotNull(response);
 
-        var expectedProject = new GetProjectResponse
+        var expectedProject = new GetProject.Response
         {
             Id = project.Id,
             Name = project.Name

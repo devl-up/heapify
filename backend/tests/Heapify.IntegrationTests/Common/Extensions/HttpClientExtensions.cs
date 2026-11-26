@@ -1,5 +1,5 @@
 ﻿using Heapify.IntegrationTests.Common.DTO;
-using Heapify.Presentation.Auth.DTO;
+using Heapify.Presentation.Auth.Endpoints;
 
 namespace Heapify.IntegrationTests.Common.Extensions;
 
@@ -27,7 +27,7 @@ public static class HttpClientExtensions
         {
             client = await client.WithAntiforgeryAsync();
 
-            var request = new LoginRequest { Email = email, Password = password };
+            var request = new LoginEndpoint.Request { Email = email, Password = password };
             var response = await client.PostAsJsonAsync("/api/v1/auth/login", request);
             response.EnsureSuccessStatusCode();
 

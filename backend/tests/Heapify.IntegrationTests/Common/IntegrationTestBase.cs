@@ -2,7 +2,7 @@
 using Heapify.IntegrationTests.Common.DTO;
 using Heapify.IntegrationTests.Common.Extensions;
 using Heapify.IntegrationTests.Common.Fixtures;
-using Heapify.Presentation.Auth.DTO;
+using Heapify.Presentation.Auth.Endpoints;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Heapify.IntegrationTests.Common;
@@ -42,7 +42,7 @@ public abstract class IntegrationTestBase(IntegrationTestFixture fixture) : IAsy
     {
         using var client = await CreateClient().WithAntiforgeryAsync();
 
-        var request = new RegisterRequest
+        var request = new RegisterEndpoint.Request
         {
             Username = username,
             Email = email,

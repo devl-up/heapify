@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using Heapify.Application.Projects.Commands.CreateProject;
+using Heapify.Application.Projects.Commands;
 using Heapify.Domain.Projects.Entities;
 using Heapify.Domain.Projects.Enums;
 using Heapify.IntegrationTests.Common;
@@ -19,7 +19,7 @@ public sealed class CreateProjectTests(IntegrationTestFixture fixture)
         using var client = await CreateClient()
             .AuthenticateAsync();
 
-        var request = new CreateProjectRequest
+        var request = new CreateProject.Request
         {
             Name = "Test Project"
         };
