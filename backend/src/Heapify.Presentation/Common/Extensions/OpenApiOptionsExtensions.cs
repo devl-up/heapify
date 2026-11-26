@@ -30,7 +30,7 @@ internal static class OpenApiOptionsExtensions
     private static string GetSchemaName(Type type)
     {
         var name = type.Name;
-
+        
         if (type.IsGenericType)
         {
             var genericTypeName = type.Name.Split('`')[0];
@@ -41,7 +41,7 @@ internal static class OpenApiOptionsExtensions
 
         if (type.DeclaringType is { } declaringType)
         {
-            name = $"{GetSchemaName(declaringType)}{type.Name}";
+            name = $"{GetSchemaName(declaringType)}{name}";
         }
 
         return name;
